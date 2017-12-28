@@ -12,6 +12,8 @@ export class Zatacka {
 		this.height = props.height;
 		this.speed = 150;
 		this.turnSpeed = 5;
+		this.leakTime = 2000;
+		this.leakDuration = 100;
 
 		this.input = new Input();
 
@@ -43,7 +45,7 @@ export class Zatacka {
 			})
 		];
 
-		this.info = props.info;
+		this.onStop = props.onStop;
 	}
 
 
@@ -60,8 +62,9 @@ export class Zatacka {
 
 		this.players.forEach((player) => {
 			player.reset();
-		})
+		});
 
+		this.relativeLeakTime = 0;
 
 		//set mainloop and start it
 		MainLoop.setUpdate((delta) => {
@@ -79,6 +82,15 @@ export class Zatacka {
 	update(delta){
 		var playersAlive = 0;
 		this.pixel.update();
+		this.relativeLeakTime += delta;
+		var leakNow = false;
+		if(this.relativeLeakTime > this.leakTime){
+			leakNow = true;
+		}
+		if(this.relativeLeakTime > this.leakTime + this.leakDuration){
+			leakNow = false;
+			this.relativeLeakTime -= this.leakTime + this.leakDuration;
+		}
 		this.players.forEach((player) => {
 
 			if(player.alive){
@@ -114,7 +126,7 @@ export class Zatacka {
 
 				// move player
 				for(var i=0; i < player.line.length; i++){
-					if(player.alive){
+					if(player.alive && !leakNow){
 						player.alive = this.pixel.setPixel(player.line[i].x, player.line[i].y, player.color);
 					}
 				}
@@ -143,6 +155,9 @@ export class Zatacka {
 
 		this.running = false;
 		this.ready = false;
+
+		if(typeof this.onStop === 'function')
+			this.onStop();
 	}
 
 	pause(){

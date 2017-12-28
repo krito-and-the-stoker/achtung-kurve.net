@@ -37,8 +37,19 @@ class InfoBox extends Component {
 		super(props);
 
 		this.state = {
-			players: []
+			players: props.players
 		}
+	}
+
+	render(){
+		const players = this.state.players.map((player) => {
+			return <li key={player.color.r+player.color.g+player.color.b} style={{color:"rgb("+player.color.r+','+player.color.g+','+player.color.b}}>{player.wins}</li>
+		});
+		return (
+			<ul>
+			{players}
+			</ul>
+		);
 	}
 }
 
@@ -51,16 +62,23 @@ class App extends Component {
 		const width = 1400;
 		const height = 800;
 
-		this.state = {
-			running: false,
-			width: width,
-			height: height
-		}
 
 		this.zatacka = new Zatacka({
 			width: width,
-			height: height
+			height: height,
+			onStop: () => {this.onStop();}
 		});
+
+		this.state = {
+			running: false,
+			width: width,
+			height: height,
+			players: this.zatacka.players
+		}
+	}
+
+	onStop(){
+		this.setState(...this.state, {players: this.zatacka.players})
 	}
 
 	clickStart() {
@@ -80,17 +98,10 @@ class App extends Component {
 	}
 
   render() {
-  	let button;
-  	if(this.state.running){
-  		button = <button onClick={() => {this.clickStop()}}>Stop!</button>;
-  	}
-  	else{
-  		button = <button onClick={() => {this.clickStart()}}>Start!</button>;
-  	}
     return (
       <div className="App">
       	<Canvas width={this.state.width} height={this.state.height} zatacka={this.zatacka} />
-      	{button}
+      	<InfoBox players={this.state.players}/>
       </div>
     );
   }
