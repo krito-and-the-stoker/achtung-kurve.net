@@ -1,6 +1,7 @@
+import bresenham from 'bresenham';
 
 
-export class PixelDrawer{
+export default class LineDrawer{
 
 	constructor(props){
 		this.height = props.height;
@@ -20,7 +21,7 @@ export class PixelDrawer{
 		return Math.sqrt((to.y - from.y)*(to.y - from.y) + (to.x - from.x)*(to.x - from.x));
 	}
 
-	setPixel(x, y, color){
+	setPoint(x, y, color){
 		const threshold = 0.3;
 		const point = {
 			x: x,
@@ -29,38 +30,38 @@ export class PixelDrawer{
 
 		var ok = true;
 
-		var intensity = 0.70710678118*PixelDrawer.distance(point, {
+		var intensity = 0.70710678118*LineDrawer.distance(point, {
 			x: Math.floor(point.x),
 			y: Math.floor(point.y)
 		});
 		if(intensity > threshold)
-			ok = ok && this.drawPixel(Math.floor(x), Math.floor(y), color.r, color.g, color.b, 255);
+			ok = ok && this.drawPixel(Math.floor(x), Math.floor(y), color.r, color.g, color.b, 255, intensity);
 
-		intensity = 0.70710678118*PixelDrawer.distance(point, {
+		intensity = 0.70710678118*LineDrawer.distance(point, {
 			x: Math.ceil(point.x),
 			y: Math.floor(point.y)
 		});
 		if(intensity > threshold)
-			ok = ok && this.drawPixel(Math.ceil(x), Math.floor(y), color.r, color.g, color.b, 255);
+			ok = ok && this.drawPixel(Math.ceil(x), Math.floor(y), color.r, color.g, color.b, 255, intensity);
 
-		intensity = 0.70710678118*PixelDrawer.distance(point, {
+		intensity = 0.70710678118*LineDrawer.distance(point, {
 			x: Math.floor(point.x),
 			y: Math.ceil(point.y)
 		});
 		if(intensity > threshold)
-			ok = ok && this.drawPixel(Math.floor(x), Math.ceil(y), color.r, color.g, color.b, 255);
+			ok = ok && this.drawPixel(Math.floor(x), Math.ceil(y), color.r, color.g, color.b, 255, intensity);
 
-		intensity = 0.70710678118*PixelDrawer.distance(point, {
+		intensity = 0.70710678118*LineDrawer.distance(point, {
 			x: Math.ceil(point.x),
 			y: Math.ceil(point.y)
 		});
 		if(intensity > threshold)
-			ok = ok && this.drawPixel(Math.ceil(x), Math.ceil(y), color.r, color.g, color.b, 255);
+			ok = ok && this.drawPixel(Math.ceil(x), Math.ceil(y), color.r, color.g, color.b, 255, intensity);
 
 		return ok;
 	}
 
-	drawPixel(x, y, r, g, b, a) {
+	drawPixel(x, y, r, g, b, a, intensity) {
 	    var index = (x + y * this.imageData.width) * 4;
 	    var colorCode = (r << 4) + (g << 2) + b;
 	    if(this.imageData.data[index] === 0 && this.imageData.data[index+1] === 0 && this.imageData.data[index+2] === 0){    	
@@ -75,6 +76,19 @@ export class PixelDrawer{
 	    else{
 	    	return this.freshColors[index] === colorCode || this.dryColors[index] === colorCode;
 	    }
+	}
+
+	drawLineBresenham(from, to, color){
+		var line = bresenham(from.x, from.y, to.x, to.y);
+		var alive = true;
+
+		// draw pixels
+		for(var i=0; i < line.length; i++){
+			if(alive)
+				alive = this.setPoint(line[i].x, line[i].y, color);
+		}
+
+		return alive;
 	}
 
 	update(){

@@ -1,9 +1,8 @@
 import MainLoop from 'mainloop.js';
-import bresenham from 'bresenham';
 
 import {Player} from './player.js';
 import {Input} from './input.js';
-import {PixelDrawer} from './pixel-drawer.js';
+import LineDrawer from './line-drawer.js';
 
 
 export class Zatacka {
@@ -54,7 +53,7 @@ export class Zatacka {
 		this.canvas = document.getElementById("zatacka");
 		this.canvas.focus();
 		this.ctx = this.canvas.getContext("2d");
-		this.pixel = new PixelDrawer({
+		this.lineDrawer = new LineDrawer({
 			ctx: this.ctx,
 			height: this.height,
 			width: this.width
@@ -81,7 +80,7 @@ export class Zatacka {
 
 	update(delta){
 		var playersAlive = 0;
-		this.pixel.update();
+		this.lineDrawer.update();
 		this.relativeLeakTime += delta;
 		var leakNow = false;
 		if(this.relativeLeakTime > this.leakTime){
@@ -122,16 +121,11 @@ export class Zatacka {
 					x: from.x + 0.001*delta*this.speed * Math.sin(player.direction),
 					y: from.y + 0.001*delta*this.speed * Math.cos(player.direction)
 				};
-				player.line = bresenham(from.x, from.y, to.x, to.y);
-
-				// move player
-				for(var i=0; i < player.line.length; i++){
-					if(player.alive && !leakNow){
-						player.alive = this.pixel.setPixel(player.line[i].x, player.line[i].y, player.color);
-					}
-				}
-				player.position = to;
 			}
+			if(!leakNow && player.alive)
+				player.alive = this.lineDrawer.drawLineBresenham(from, to, player.color);
+
+			player.position = to;
 
 			if(player.alive)
 				playersAlive++;
@@ -142,7 +136,7 @@ export class Zatacka {
 	}
 
 	draw(){
-		this.ctx.putImageData(this.pixel.imageData, 0,0);
+		this.ctx.putImageData(this.lineDrawer.imageData, 0,0);
 	}
 
 	stop(){
