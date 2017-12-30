@@ -2,7 +2,7 @@
 
 
 
-export class Input{
+export default class Input{
 
 	constructor(props){
 		this.keyMap = {};

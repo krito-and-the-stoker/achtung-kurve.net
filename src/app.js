@@ -43,7 +43,7 @@ class InfoBox extends Component {
 
 	render(){
 		const players = this.state.players.map((player) => {
-			return <li key={player.color.r+player.color.g+player.color.b} style={{color:"rgb("+player.color.r+','+player.color.g+','+player.color.b}}>{player.wins}</li>
+			return <li key={player.color.r.toString()+player.color.g.toString()+player.color.b.toString()} style={{color:"rgb("+player.color.r+','+player.color.g+','+player.color.b}}>{player.wins}</li>
 		});
 		return (
 			<ul>

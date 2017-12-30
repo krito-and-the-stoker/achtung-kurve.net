@@ -1,8 +1,9 @@
 import MainLoop from 'mainloop.js';
 
-import {Player} from './player.js';
-import {Input} from './input.js';
-import LineDrawer from './line-drawer.js';
+import Player from './player.js';
+import Input from './input.js';
+import Collision from './collision.js';
+import Render from './render.js';
 
 
 export class Zatacka {
@@ -12,10 +13,9 @@ export class Zatacka {
 		this.speed = 150;
 		this.turnSpeed = 5;
 		this.leakTime = 2000;
-		this.leakDuration = 100;
+		this.leakDuration = 150;
 
 		this.input = new Input();
-
 		this.ready = false;
 		this.running = false;
 
@@ -53,11 +53,19 @@ export class Zatacka {
 		this.canvas = document.getElementById("zatacka");
 		this.canvas.focus();
 		this.ctx = this.canvas.getContext("2d");
-		this.lineDrawer = new LineDrawer({
-			ctx: this.ctx,
+		this.movementLines = [];
+
+		this.renderer = new Render({
+			width: this.width,
 			height: this.height,
-			width: this.width
+			ctx: this.ctx
 		});
+
+		this.collision = new Collision({
+			width: this.width,
+			height: this.height
+		});
+
 
 		this.players.forEach((player) => {
 			player.reset();
@@ -80,7 +88,7 @@ export class Zatacka {
 
 	update(delta){
 		var playersAlive = 0;
-		this.lineDrawer.update();
+
 		this.relativeLeakTime += delta;
 		var leakNow = false;
 		if(this.relativeLeakTime > this.leakTime){
@@ -90,42 +98,44 @@ export class Zatacka {
 			leakNow = false;
 			this.relativeLeakTime -= this.leakTime + this.leakDuration;
 		}
+
+		// turn left/right
 		this.players.forEach((player) => {
-
-			if(player.alive){
-
-				// die on the edge
-				if(player.position.x >= this.width)
-					player.alive = false
-				if(player.position.x < 0)
-					player.alive = false
-				if(player.position.y >= this.height)
-					player.alive = false
-				if(player.position.y < 0)
-					player.alive = false
-
-				// turn left/right
+			if(player.alive){			
 				if(this.input.isPressed(player.left)){
 					player.direction += 0.001*delta*this.turnSpeed;
 				}
 				if(this.input.isPressed(player.right)){
 					player.direction -= 0.001*delta*this.turnSpeed;
 				}
+			}
+		});
+
+		this.players.forEach((player) => {
+
+			if(player.alive){
+				// die on the edge
+				player.alive = this.collision.positionValid(player.position);
 
 				// get line start and end points
-				var from = {
-					x: player.position.x,
-					y: player.position.y
-				};
 				var to = {
-					x: from.x + 0.001*delta*this.speed * Math.sin(player.direction),
-					y: from.y + 0.001*delta*this.speed * Math.cos(player.direction)
+					x: player.position.x + 0.001*delta*this.speed * Math.sin(player.direction),
+					y: player.position.y + 0.001*delta*this.speed * Math.cos(player.direction)
 				};
-			}
-			if(!leakNow && player.alive)
-				player.alive = this.lineDrawer.drawLineBresenham(from, to, player.color);
 
-			player.position = to;
+				if(leakNow)
+					player.position = to;
+				else
+					this.collision.tryToMove(player, to);
+			}
+
+			var newLines = this.collision.commitMovements();
+			this.movementLines = this.movementLines.concat(newLines);
+
+			newLines.forEach((line) => {
+				//a bit dirty: consider multiple lines per player...
+				line.player.position = line.to;
+			})
 
 			if(player.alive)
 				playersAlive++;
@@ -136,7 +146,8 @@ export class Zatacka {
 	}
 
 	draw(){
-		this.ctx.putImageData(this.lineDrawer.imageData, 0,0);
+		this.renderer.draw(this.movementLines);
+		this.movementLines = [];
 	}
 
 	stop(){

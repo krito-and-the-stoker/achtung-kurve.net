@@ -1,6 +1,6 @@
 
 
-export class Player {
+export default class Player {
 	constructor(props){
 		this.width = props.width;
 		this.height = props.height;
