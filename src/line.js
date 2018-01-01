@@ -4,7 +4,7 @@ export default class Line{
 		this.from = props.from;
 		this.to = props.to;
 		this.player = props.player;
-		this.thickness = 2;
+		this.thickness = 2.5;
 
 		this.delta = null;
 		this.points = null;

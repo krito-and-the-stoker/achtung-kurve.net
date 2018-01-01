@@ -11,7 +11,7 @@ export class Zatacka {
 		this.width = props.width;
 		this.height = props.height;
 		this.speed = 150;
-		this.turnSpeed = 5;
+		this.turnSpeed = 4;
 		this.leakTime = 2000;
 		this.leakDuration = 150;
 
@@ -26,19 +26,41 @@ export class Zatacka {
 					g: 0,
 					b: 0
 				},
-				left: 81,
-				right: 87,
+				left: 49,
+				right: 81,
 				width: this.width,
 				height: this.height
 			}),
 			new Player({
 				color: {
 					r: 0,
-					g: 0,
+					g: 255,
 					b: 255
+				},
+				left: 89,
+				right: 88,
+				width: this.width,
+				height: this.height
+			}),
+			new Player({
+				color: {
+					r: 255,
+					g: 255,
+					b: 0
 				},
 				left: 37,
 				right: 39,
+				width: this.width,
+				height: this.height
+			}),
+			new Player({
+				color: {
+					r: 255,
+					g: 0,
+					b: 255
+				},
+				left: 220,
+				right: 187,
 				width: this.width,
 				height: this.height
 			})
@@ -72,6 +94,7 @@ export class Zatacka {
 		});
 
 		this.relativeLeakTime = 0;
+		this.turnsLeft = 10;
 
 		//set mainloop and start it
 		MainLoop.setUpdate((delta) => {
@@ -141,7 +164,10 @@ export class Zatacka {
 				playersAlive++;
 		});
 
-		if(playersAlive <= 1)
+		if(playersAlive <= 0)
+			this.turnsLeft--;
+
+		if(this.turnsLeft === 0)
 			this.stop();
 	}
 

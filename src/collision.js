@@ -42,14 +42,11 @@ export default class Collision {
 
 			//check with all existing pixels
 			var points = line.rasterize();
-			var lastValidPoint = points[0];
 			points.forEach((point) => {
-				if(!this.positionValid(point)){
-					line.to = lastValidPoint;
+				if(!this.positionValid(point) || !line.player.alive){
 					line.player.alive = false;
 				}
 				else{
-					// console.log(point.x, point.y);
 					var index = point.x + point.y * this.width;
 
 					//no collision here
@@ -61,18 +58,15 @@ export default class Collision {
 					}
 					else{
 						//collision with recently drawn pixel by us
-						if(this.collisionData[index].player === line.player && this.collisionData[index].time >= this.internalTime - 10){
+						if(this.collisionData[index].player === line.player && this.collisionData[index].time >= this.internalTime - 5*line.thickness){
 							// ignore
 						}
 						else{
 							//we are dead
 							line.player.alive = false;
-							line.to = lastValidPoint; //stop here
 						}
 					}
 				}
-
-				lastValidPoint = point;
 			});
 
 			approved.push(line);
