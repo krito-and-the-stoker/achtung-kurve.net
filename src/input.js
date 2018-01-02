@@ -9,7 +9,6 @@ export default class Input{
 	}
 	
 	keyDown(keyCode){
-		console.log(keyCode);
 		this.keyMap[keyCode] = true;
 	}
 

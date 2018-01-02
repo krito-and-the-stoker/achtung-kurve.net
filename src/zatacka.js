@@ -19,63 +19,21 @@ export class Zatacka {
 		this.ready = false;
 		this.running = false;
 
-		this.players = [
-			new Player({
-				color: {
-					r: 255,
-					g: 0,
-					b: 0
-				},
-				left: 49,
-				right: 81,
-				width: this.width,
-				height: this.height
-			}),
-			new Player({
-				color: {
-					r: 0,
-					g: 255,
-					b: 255
-				},
-				left: 89,
-				right: 88,
-				width: this.width,
-				height: this.height
-			}),
-			new Player({
-				color: {
-					r: 255,
-					g: 255,
-					b: 0
-				},
-				left: 37,
-				right: 39,
-				width: this.width,
-				height: this.height
-			}),
-			new Player({
-				color: {
-					r: 255,
-					g: 0,
-					b: 255
-				},
-				left: 220,
-				right: 187,
-				width: this.width,
-				height: this.height
-			})
-		];
+		this.players = Player.createAll({
+			width: this.width,
+			height: this.height
+		});
 
 		this.onStop = props.onStop;
 	}
 
 
 	start(){
+
 		//set up canvas
 		this.canvas = document.getElementById("zatacka");
 		this.canvas.focus();
 		this.ctx = this.canvas.getContext("2d");
-		this.movementLines = [];
 
 		this.renderer = new Render({
 			width: this.width,
@@ -87,7 +45,9 @@ export class Zatacka {
 			width: this.width,
 			height: this.height
 		});
+		
 
+		this.movementLines = [];
 
 		this.players.forEach((player) => {
 			player.reset();
@@ -152,19 +112,23 @@ export class Zatacka {
 					this.collision.tryToMove(player, to);
 			}
 
-			var newLines = this.collision.commitMovements();
-			this.movementLines = this.movementLines.concat(newLines);
-
-			newLines.forEach((line) => {
-				//a bit dirty: consider multiple lines per player...
-				line.player.position = line.to;
-			})
-
-			if(player.alive)
-				playersAlive++;
 		});
 
-		if(playersAlive <= 0)
+		var newLines = this.collision.commitMovements();
+		this.movementLines = this.movementLines.concat(newLines);
+
+		newLines.forEach((line) => {
+			//a bit dirty: consider multiple lines per player...
+			line.player.position = line.to;
+		});
+
+		this.players.forEach((player) => {
+			if(player.alive)
+				playersAlive++;			
+		});
+
+
+		if(playersAlive <= 1)
 			this.turnsLeft--;
 
 		if(this.turnsLeft === 0)
