@@ -5,11 +5,12 @@ export default class Player {
 		this.color = props.color;
 		this.left = props.left;
 		this.right = props.right;
+		this.active = false;
 		this.wins = 0;
 	}
 
 	reset(){
-		this.alive = true;
+		this.alive = this.active;
 		this.direction = 2*Math.PI*Math.random();
 		this.position = {
 			x: Math.floor(this.width*Math.random()),

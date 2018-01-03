@@ -1,0 +1,62 @@
+
+.ConfigScreen {
+	position: absolute;
+	width: 100vw;
+	height: 100vh;
+	background-color: transparent;
+}
+
+.ConfigScreen img{
+    width: 60%;
+    margin: 2vw auto;
+    display: block;
+	height: auto;
+}
+
+.chooseYourColor {
+	margin-top: 8vw;
+}
+
+h1{
+	color: white;
+	text-align: center;
+}
+
+
+ul{
+	text-align: center;
+	padding: 0;
+}
+li{
+	display: inline;
+	margin-right: 10px;
+	font-size: 24px;
+}
+
+.circle{
+	border-radius: 50%;
+	width: 3vw;
+	height: 3vw;
+	margin: 0.5vw;
+	display: inline-block;
+}
+
+.activePlayerList {
+	text-align: center;
+}
+
+.blink {
+  opacity: 0;
+  animation: blinking 1s linear infinite;
+}
+
+@keyframes blinking {
+  from,
+  49.9999% {
+    opacity: 0;
+  }
+  50%,
+  to {
+    opacity: 1;
+  }
+}

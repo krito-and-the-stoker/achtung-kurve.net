@@ -6,7 +6,7 @@ import Collision from './collision.js';
 import Render from './render.js';
 
 
-export class Zatacka {
+export default class Zatacka {
 	constructor(props){
 		this.speed = 150;
 		this.turnSpeed = 4;
@@ -36,13 +36,17 @@ export class Zatacka {
 
 		this.movementLines = [];
 
+		this.playersActive = 0;
 		this.players.forEach((player) => {
 			player.dimensions = {
 				width: this.width,
 				height: this.height
 			};
 			player.reset();
+			if(player.active)
+				this.playersActive++;
 		});
+
 
 		this.relativeLeakTime = 0;
 		this.turnsLeft = 10;
@@ -119,7 +123,7 @@ export class Zatacka {
 		});
 
 
-		if(playersAlive <= 1)
+		if(playersAlive <= 1 && playersAlive < this.playersActive)
 			this.turnsLeft--;
 
 		if(this.turnsLeft === 0)
