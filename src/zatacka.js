@@ -22,27 +22,12 @@ export class Zatacka {
 
 
 	start(){
-
-		//set up canvas
-		this.canvas = document.getElementById("zatacka");
-		this.canvas.focus();
-		this.ctx = this.canvas.getContext("2d");
-
-		//get viewport
-		this.width = this.canvas.clientWidth;
-		this.height = this.canvas.clientHeight;
-
-		//set internal pixels to match viewport
-		this.canvas.width = this.width;
-		this.canvas.height = this.height;
-
-		console.log(this.width, this.height);
-
 		this.renderer = new Render({
-			width: this.width,
-			height: this.height,
-			ctx: this.ctx
+			canvas: document.getElementById("zatacka")
 		});
+
+		this.width = this.renderer.width;
+		this.height = this.renderer.height;
 
 		this.collision = new Collision({
 			width: this.width,
