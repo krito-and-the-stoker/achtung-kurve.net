@@ -8,8 +8,6 @@ import Render from './render.js';
 
 export class Zatacka {
 	constructor(props){
-		this.width = props.width;
-		this.height = props.height;
 		this.speed = 150;
 		this.turnSpeed = 4;
 		this.leakTime = 2000;
@@ -19,12 +17,7 @@ export class Zatacka {
 		this.ready = false;
 		this.running = false;
 
-		this.players = Player.createAll({
-			width: this.width,
-			height: this.height
-		});
-
-		this.onStop = props.onStop;
+		this.players = Player.createAll();
 	}
 
 
@@ -35,6 +28,16 @@ export class Zatacka {
 		this.canvas.focus();
 		this.ctx = this.canvas.getContext("2d");
 
+		//get viewport
+		this.width = this.canvas.clientWidth;
+		this.height = this.canvas.clientHeight;
+
+		//set internal pixels to match viewport
+		this.canvas.width = this.width;
+		this.canvas.height = this.height;
+
+		console.log(this.width, this.height);
+
 		this.renderer = new Render({
 			width: this.width,
 			height: this.height,
@@ -44,12 +47,15 @@ export class Zatacka {
 		this.collision = new Collision({
 			width: this.width,
 			height: this.height
-		});
-		
+		});		
 
 		this.movementLines = [];
 
 		this.players.forEach((player) => {
+			player.dimensions = {
+				width: this.width,
+				height: this.height
+			};
 			player.reset();
 		});
 

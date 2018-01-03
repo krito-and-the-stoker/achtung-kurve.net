@@ -26,7 +26,7 @@ class Canvas extends Component {
 
 	render() {
 		 return (
-			 <canvas width={this.state.width} height={this.state.height} onKeyDown={(e) => {this.handleKeyDown(e)}} onKeyUp={(e) => {this.handleKeyUp(e)}} tabIndex="0" id="zatacka">
+			 <canvas onKeyDown={(e) => {this.handleKeyDown(e)}} onKeyUp={(e) => {this.handleKeyUp(e)}} tabIndex="0" id="zatacka">
 			 </canvas>
 		 )
 	}
@@ -55,18 +55,16 @@ class InfoBox extends Component {
 
 
 
-class App extends Component {
+class Game extends Component {
 
 	constructor(props){
 		super(props);
 		const width = 1400;
 		const height = 800;
 
-
 		this.zatacka = new Zatacka({
 			width: width,
 			height: height,
-			onStop: () => {this.onStop();}
 		});
 
 		this.state = {
@@ -75,36 +73,17 @@ class App extends Component {
 			height: height,
 			players: this.zatacka.players
 		}
+
 	}
 
-	onStop(){
-		this.setState(...this.state, {players: this.zatacka.players})
-	}
-
-	clickStart() {
-		this.zatacka.start();
-		this.setState({
-			...this.state,
-			running: true
-		});
-	}
-
-	clickStop() {
-		this.zatacka.stop();
-		this.setState({
-			...this.state,
-			running: false
-		});
-	}
 
   render() {
     return (
-      <div className="App">
+      <div className="Game">
       	<Canvas width={this.state.width} height={this.state.height} zatacka={this.zatacka} />
-      	<InfoBox players={this.state.players}/>
       </div>
     );
   }
 }
 
-export default App;
+export default Game;

@@ -2,14 +2,10 @@
 
 export default class Player {
 	constructor(props){
-		this.width = props.width;
-		this.height = props.height;
 		this.color = props.color;
 		this.left = props.left;
 		this.right = props.right;
 		this.wins = 0;
-
-		this.reset();
 	}
 
 	reset(){
@@ -19,6 +15,18 @@ export default class Player {
 			x: Math.floor(this.width*Math.random()),
 			y: Math.floor(this.height*Math.random())
 		};
+	}
+
+	set dimensions(props){
+		this.width = props.width;
+		this.height = props.height;
+	}
+
+	get dimensions(){
+		return {
+			width: this.width,
+			height: this.height
+		}
 	}
 
 	//create all players with default settings
@@ -33,8 +41,6 @@ export default class Player {
 				},
 				left: 49,
 				right: 81,
-				width: props.width,
-				height: props.height
 			}),
 		//cyan: xc
 			new Player({
@@ -45,8 +51,6 @@ export default class Player {
 				},
 				left: 88,
 				right: 67,
-				width: props.width,
-				height: props.height
 			}),
 		//yellow: bn
 			new Player({
@@ -57,8 +61,6 @@ export default class Player {
 				},
 				left: 66,
 				right: 78,
-				width: props.width,
-				height: props.height
 			}),
 		//purple: p0
 			new Player({
@@ -69,8 +71,6 @@ export default class Player {
 				},
 				left: 48,
 				right: 80,
-				width: props.width,
-				height: props.height
 			}),
 		//green: <-,->
 			new Player({
@@ -81,8 +81,6 @@ export default class Player {
 				},
 				left: 37,
 				right: 39,
-				width: props.width,
-				height: props.height
 			}),
 		//white: mk
 			new Player({
@@ -93,8 +91,6 @@ export default class Player {
 				},
 				left: 77,
 				right: 75,
-				width: props.width,
-				height: props.height
 			})
 		];		
 	}
