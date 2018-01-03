@@ -3,7 +3,8 @@ import MainLoop from 'mainloop.js';
 import Player from './player.js';
 import Input from './input.js';
 import Collision from './collision.js';
-import Render from './render.js';
+import Renderer from './renderer.js';
+import Recorder from './recorder.js';
 
 
 export default class Zatacka {
@@ -34,7 +35,7 @@ export default class Zatacka {
 
 
 	start(){
-		this.renderer = new Render({
+		this.renderer = new Renderer({
 			canvas: document.getElementById("zatacka")
 		});
 
@@ -57,6 +58,11 @@ export default class Zatacka {
 			player.reset();
 			if(player.active)
 				this.playersActive++;
+		});
+
+		this.recorder = new Recorder({
+			width: this.width,
+			height: this.height
 		});
 
 
@@ -123,6 +129,7 @@ export default class Zatacka {
 
 		var newLines = this.collision.commitMovements();
 		this.movementLines = this.movementLines.concat(newLines);
+		this.recorder.record(newLines);
 
 		newLines.forEach((line) => {
 			//a bit dirty: consider multiple lines per player...
@@ -154,6 +161,8 @@ export default class Zatacka {
 			if(player.alive)
 				player.wins++;
 		});
+
+		this.recorder.export();
 
 		this.running = false;
 		this.ready = false;

@@ -1,7 +1,7 @@
 
 
 
-export default class Render {
+export default class Renderer {
 	constructor(props){
 
 		//set up canvas
