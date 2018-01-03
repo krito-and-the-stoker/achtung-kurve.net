@@ -17,7 +17,19 @@ export default class Zatacka {
 		this.ready = false;
 		this.running = false;
 
+		this.onRunningStateChange = props.onRunningStateChange;
+
 		this.players = Player.createAll();
+	}
+
+	set running(value){
+		this._running = value;
+		if(typeof this.onRunningStateChange === 'function')
+			this.onRunningStateChange(this.running);
+	}
+
+	get running(){
+		return this._running;
 	}
 
 
@@ -54,11 +66,11 @@ export default class Zatacka {
 		//set mainloop and start it
 		MainLoop.setUpdate((delta) => {
 			this.update(delta);
-		})
+		});
 
 		MainLoop.setDraw(() => {
 			this.draw();
-		})
+		});
 
 		this.ready = true;
 		this.resume();

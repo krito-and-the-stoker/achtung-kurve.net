@@ -16,3 +16,19 @@ canvas{
 	display: block;
 	background-color: black;
 }
+
+.blink {
+  opacity: 0;
+  animation: blinking 1s linear infinite;
+}
+
+@keyframes blinking {
+  from,
+  49.9999% {
+    opacity: 0;
+  }
+  50%,
+  to {
+    opacity: 1;
+  }
+}

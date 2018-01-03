@@ -9,7 +9,6 @@ export default class ConfigScreen extends Component {
 
 		this.state = {
 			activePlayers: [],
-			visible: true
 		}
 	}
 
@@ -31,7 +30,6 @@ export default class ConfigScreen extends Component {
 		if(e.keyCode === 32){
 			this.setState({
 				...this.state,
-				visible: false,
 				activePlayers: activePlayers
 			});
 
@@ -39,14 +37,18 @@ export default class ConfigScreen extends Component {
 		}
 	}
 
+	componentDidMount(){
+		document.getElementById('configScreen').focus();
+	}
+
 	render(){
-		if(this.state.visible){		
+		if(this.props.show){		
 			const activePlayerList = this.state.activePlayers.map((player) => {
 				return <span key={player.color.r.toString()+player.color.g.toString()+player.color.b.toString()} className="circle" style={{backgroundColor:"rgb("+player.color.r+','+player.color.g+','+player.color.b}}></span>
 			});
 			var startMessage = activePlayerList.length === 0 ? '':<h1 className="blink">Hit Space to start</h1>;
 			return (
-				<div className="ConfigScreen" onKeyUp={(e) => {this.handleKeyPress(e);}} tabIndex="1">
+				<div className="ConfigScreen" onKeyUp={(e) => {this.handleKeyPress(e);}} tabIndex="1" id="configScreen">
 					<h1 className="chooseYourColor">Choose your Color</h1>
 					<img src="/kurve_tastatur.png" alt="keys"/>
 					<div className="activePlayerList">{activePlayerList}</div>

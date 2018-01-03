@@ -8,7 +8,6 @@ export default class Canvas extends Component {
 	}
 
 	handleKeyDown(e){
-		e.preventDefault();
 		if(e.keyCode === 32){
 			this.zatacka.hitSpace();
 		}
@@ -17,7 +16,6 @@ export default class Canvas extends Component {
 	}
 
 	handleKeyUp(e){
-		e.preventDefault();
 		this.zatacka.input.keyUp(e.keyCode);
 	}
 
