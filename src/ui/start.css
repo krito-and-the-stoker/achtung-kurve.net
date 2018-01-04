@@ -1,0 +1,30 @@
+
+
+.StartScreen{
+	position: absolute;
+	width: 100vw;
+	height: 100vh;
+}
+
+.StartScreen canvas{
+	width: 100%;
+	height: auto;
+}
+
+.StartScreen h2{
+	position: absolute;
+	bottom: 10vh;
+	width: 100%;
+	text-align: center;
+	font-size: 1.5vw;
+	color: white;
+}
+
+.StartScreen h1{
+	position: absolute;
+	top: 25vh;
+	width: 100%;
+	text-align: center;
+	color: white;
+	font-size: 10vw;
+}

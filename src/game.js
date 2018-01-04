@@ -2,41 +2,42 @@ import React, { Component } from 'react';
 
 import ConfigScreen from './ui/config.js';
 import PauseScreen from './ui/pause.js';
+import StartScreen from './ui/start.js';
+
 import Canvas from './ui/canvas.js';
 import Zatacka from './game/zatacka.js';
+
+import store, {START, CONFIG, GAME} from './store.js';
+
 
 export default class Game extends Component {
 
 	constructor(props){
 		super(props);
 
-    this.state = {
-      running: false,
-      config: true,
-      pause: false
-    };
-
+    this.state = store.getState();
+    
 		this.zatacka = new Zatacka({
-      onRunningStateChange: (v) => {this.onRunningStateChange(v);}
+      id: 'zatacka',
     });
 	}
 
-  onRunningStateChange(value){
-    this.setState({
-      ...this.state,
-      running: value,
-      config: false,
-      pause: !value
+  componentDidMount(){
+    store.subscribe(() => {
+      this.setState(store.getState());
+      // console.log(store.getState());
     });
+
   }
 
 
   render() {
     return (
       <div className="Game">
-      	<ConfigScreen zatacka={this.zatacka} show={this.state.config} />
-        <PauseScreen zatacka={this.zatacka} show={this.state.pause} />
-      	<Canvas zatacka={this.zatacka} />
+        <StartScreen active={this.state.screen === START} />
+      	<ConfigScreen zatacka={this.zatacka} active={this.state.screen === CONFIG} />
+        <PauseScreen zatacka={this.zatacka} active={this.state.paused} />
+      	<Canvas zatacka={this.zatacka} active={this.state.screen === GAME} />
       </div>
     );
   }

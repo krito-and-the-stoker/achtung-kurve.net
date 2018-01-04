@@ -11,7 +11,7 @@ export default class PauseScreen extends Component {
 	}
 
 	render(){
-		if(!this.props.show){
+		if(!this.props.active){
 			return null;
 		}
 		else{		

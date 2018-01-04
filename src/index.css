@@ -2,19 +2,8 @@ body {
   margin: 0;
   padding: 0;
   font-family: sans-serif;
-  background-color: white;
+  background-color: black;
   overflow: scroll;
-}
-
-canvas{
-	width: 100vw;
-	height: 100vh;
-	margin: 0;
-	padding: 0;
-	border: 0;
-	outline: none;
-	display: block;
-	background-color: black;
 }
 
 .blink {

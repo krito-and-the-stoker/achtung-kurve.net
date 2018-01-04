@@ -5,7 +5,9 @@ import Input from './input.js';
 import Collision from './collision.js';
 import Renderer from './renderer.js';
 import Recorder from './recorder.js';
+import Playback from './playback.js';
 
+import store, { pauseGame, startGame, GAME } from '../store.js';
 
 export default class Zatacka {
 	constructor(props){
@@ -16,27 +18,52 @@ export default class Zatacka {
 
 		this.input = new Input();
 		this.ready = false;
-		this.running = false;
+		this._running = false;
 
-		this.onRunningStateChange = props.onRunningStateChange;
+		this.id = props.id;
 
 		this.players = Player.createAll();
+
+		//start automatically
+		store.subscribe(() => {
+			var state = store.getState();
+			if(state.screen === GAME){
+				if(!state.paused && !this.running)
+					this.resume();
+				if(state.paused && this.running)
+					this.pause();
+			}
+		});
+
+		document.body.addEventListener('keydown', (e) => {
+			if(e.keyCode === 32){
+				var state = store.getState();
+				if(state.screen === GAME)
+					this.hitSpace();
+			}
+		});
 	}
 
 	set running(value){
 		this._running = value;
-		if(typeof this.onRunningStateChange === 'function')
-			this.onRunningStateChange(this.running);
+		if(this._running === false){
+			store.dispatch(pauseGame());
+		}
 	}
 
 	get running(){
 		return this._running;
 	}
 
+	playback(data){
+		this.playback = new Playback(data);
+		this.playback.start();
+	}
+
 
 	start(){
 		this.renderer = new Renderer({
-			canvas: document.getElementById("zatacka")
+			canvas: document.getElementById(this.id)
 		});
 
 		this.width = this.renderer.width;
@@ -155,20 +182,19 @@ export default class Zatacka {
 	}
 
 	stop(){
-		MainLoop.stop();
+		if(this.running){		
+			MainLoop.stop();
 
-		this.players.forEach((player) => {
-			if(player.alive)
-				player.wins++;
-		});
+			this.players.forEach((player) => {
+				if(player.alive)
+					player.wins++;
+			});
 
-		this.recorder.export();
+			this.recorder.export();
 
-		this.running = false;
-		this.ready = false;
-
-		if(typeof this.onStop === 'function')
-			this.onStop();
+			this.running = false;
+			this.ready = false;
+		}
 	}
 
 	pause(){
@@ -178,26 +204,22 @@ export default class Zatacka {
 	}
 
 	resume(){
-		if(!this.running)
+		if(!this.ready){
+			this.start();
+		}
+		if(!this.running){
 			MainLoop.start();
+			this.running = true;
+		}
 
-		this.running = true;
 	}
 
 	hitSpace(){
 		if(this.running){
-			this.pause();
-			return;
+			store.dispatch(pauseGame());
 		}
-		if(!this.running){
-			if(this.ready){
-				this.resume();
-				return;
-			}
-			if(!this.ready){
-				this.start();
-				return;
-			}
+		else{
+			store.dispatch(startGame());
 		}
 	}
 

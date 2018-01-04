@@ -3,7 +3,6 @@
 
 export default class Renderer {
 	constructor(props){
-
 		//set up canvas
 		this.canvas = props.canvas;
 		this.canvas.focus();
@@ -15,6 +14,17 @@ export default class Renderer {
 		this.height = this.canvas.clientHeight;
 
 		//set internal pixels to match viewport
+		this.canvas.width = this.width;
+		this.canvas.height = this.height;
+
+		this.ctx.fillStyle = '#000000';
+		this.ctx.fillRect(0, 0, this.width,this.height);
+	}
+
+	setDimensions(props){
+		this.width = props.width;
+		this.height = props.height;
+
 		this.canvas.width = this.width;
 		this.canvas.height = this.height;
 
