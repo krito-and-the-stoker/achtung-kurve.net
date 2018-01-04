@@ -36,13 +36,12 @@ export default class Zatacka {
 		});
 
 		document.body.addEventListener('keydown', (e) => {
+			var state = store.getState();
 			if(e.keyCode === 32){
-				var state = store.getState();
 				if(state.screen === GAME)
 					this.hitSpace();
 			}
 			if(e.keyCode === 27){
-				var state = store.getState();
 				if(state.screen === GAME && state.paused === true){
 					this.stop();
 					this.renderer.clear();

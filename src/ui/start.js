@@ -4,10 +4,14 @@ import './start.css';
 import store, { goConfig } from '../store.js';
 
 
-import game35 from '../data/game-35.json';
-import game53 from '../data/game-53.json';
-import game66 from '../data/game-66.json';
-import game20 from '../data/game-20.json';
+import game18 from '../data/game-28.json';
+import game19 from '../data/game-39.json';
+import game20 from '../data/game-30.json';
+import game21 from '../data/game-31.json';
+import game22 from '../data/game-32.json';
+import game23 from '../data/game-33.json';
+import game24 from '../data/game-34.json';
+import game25 from '../data/game-35.json';
 
 
 
@@ -22,10 +26,14 @@ export default class StartScreen extends Component {
 		});
 
 		this.games = [
-			game35,
-			game53,
-			game66,
-			game20
+			game18,
+			game19,
+			game20,
+			game21,
+			game22,
+			game23,
+			game24,
+			game25,
 		];
 	}
 
