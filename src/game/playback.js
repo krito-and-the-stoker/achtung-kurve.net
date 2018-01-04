@@ -81,12 +81,19 @@ export default class Playback{
 		this.drawQueue = [];
 	}
 
-	stop(){
+	pause(){
 		if(this.running){
 			MainLoop.stop();
+			this.running = false;
 		}
+	}
 
-		this.running = false;
+	stop(){
+		if(this.running){
+			this.pause();
+			if(typeof this.onFinished === 'function')
+				this.onFinished();
+		}
 	}
 
 	update(delta){
@@ -96,22 +103,24 @@ export default class Playback{
 			this.currentStep++;
 			if(this.currentStep >= this.steps.length){
 				this.stop();
-				if(typeof this.onFinished === 'function')
-					this.onFinished();
 			}
 		}
 		if(typeof this.steps[this.currentStep].time === 'undefined'){
 			this.stop();
-			if(typeof this.onFinished === 'function')
-				this.onFinished();
 		}
 	}
 
 	draw(){
 		var lines = this.drawQueue;
-		if(lines.length > 0){
-			this.renderer.draw(lines);
+		if(lines.length > this.steps.length){
+			this.stop();
 		}
+		else{		
+			if(lines.length > 0){
+				this.renderer.draw(lines);
+			}
+		}
+		
 		this.drawQueue = [];
 	}
 
