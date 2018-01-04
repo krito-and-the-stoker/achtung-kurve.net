@@ -5,6 +5,7 @@ export default class Player {
 		this.color = props.color;
 		this.left = props.left;
 		this.right = props.right;
+		this.id = props.id;
 		this.active = false;
 		this.wins = 0;
 	}
@@ -35,6 +36,7 @@ export default class Player {
 		return [
 		//red: 1q
 			new Player({
+				id: 0,
 				color: {
 					r: 255,
 					g: 0,
@@ -45,6 +47,7 @@ export default class Player {
 			}),
 		//cyan: xc
 			new Player({
+				id: 1,
 				color: {
 					r: 0,
 					g: 255,
@@ -55,6 +58,7 @@ export default class Player {
 			}),
 		//yellow: bn
 			new Player({
+				id: 2,
 				color: {
 					r: 255,
 					g: 255,
@@ -65,6 +69,7 @@ export default class Player {
 			}),
 		//purple: p0
 			new Player({
+				id: 3,
 				color: {
 					r: 255,
 					g: 0,
@@ -75,6 +80,7 @@ export default class Player {
 			}),
 		//green: <-,->
 			new Player({
+				id: 4,
 				color: {
 					r: 0,
 					g: 255,
@@ -85,6 +91,7 @@ export default class Player {
 			}),
 		//white: mk
 			new Player({
+				id: 5,
 				color: {
 					r: 255,
 					g: 255,

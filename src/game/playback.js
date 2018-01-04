@@ -2,6 +2,7 @@ import MainLoop from 'mainloop.js';
 
 import Renderer from './renderer.js';
 import Line from './line.js';
+import store, { START } from '../store.js';
 
 export default class Playback{
 
@@ -16,23 +17,34 @@ export default class Playback{
 
 	prepareData(data){
 		//convert steps to drawable lines
+		this.players = data.players;
 		this.steps = [];
 		data.steps.forEach((step) => {
 			var lines = [];
-			step.forEach((line) => {
+			step.lines.forEach((line) => {
 				lines.push(new Line({
 					from: line.from,
 					to: line.to,
-					player: line.player
+					player: this.players[line.playerId]
 				}));
 			});
-			this.steps.push(lines);
+			this.steps.push({
+				lines: lines,
+				time: step.time
+			});
 		});
 
-		this.steps.push(null);
+		this.steps.push({});
 
 		this.width = data.width;
 		this.height = data.height;
+
+		store.subscribe(() => {
+			var state = store.getState();
+			if(state.screen !== START){
+				this.stop();
+			}
+		})
 	}
 
 	start(data){
@@ -53,22 +65,20 @@ export default class Playback{
 				this.draw()
 			});
 
+			MainLoop.setUpdate((delta) => {
+				this.update(delta);
+			});
+
 			this.running = true;
 			MainLoop.start();
 		}
 	}
 
-	next(){
-		if(this.currentStep < this.steps.length){
-			this.currentStep++;
-			return this.steps[this.currentStep];
-		}
-
-		return null;
-	}
 
 	rewind(){
+		this.currentTime = 0;
 		this.currentStep = 0;
+		this.drawQueue = [];
 	}
 
 	stop(){
@@ -79,18 +89,30 @@ export default class Playback{
 		this.running = false;
 	}
 
-	draw(){
-		var lines = this.next();
-		if(lines === null){
+	update(delta){
+		this.currentTime += delta;
+		while(this.currentTime > this.steps[this.currentStep].time){
+			this.drawQueue = this.drawQueue.concat(this.steps[this.currentStep].lines);
+			this.currentStep++;
+			if(this.currentStep >= this.steps.length){
+				this.stop();
+				if(typeof this.onFinished === 'function')
+					this.onFinished();
+			}
+		}
+		if(typeof this.steps[this.currentStep].time === 'undefined'){
 			this.stop();
 			if(typeof this.onFinished === 'function')
 				this.onFinished();
 		}
-		else{
-			if(lines.length > 0){
-				this.renderer.draw(lines);
-			}
+	}
+
+	draw(){
+		var lines = this.drawQueue;
+		if(lines.length > 0){
+			this.renderer.draw(lines);
 		}
+		this.drawQueue = [];
 	}
 
 }

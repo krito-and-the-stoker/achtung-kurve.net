@@ -32,6 +32,13 @@ function handleUI(state = initialState, action){
 			screen: CONFIG
 		}
 	}
+	if(action.type === 'GOTOSTARTSCREEN'){
+		return {
+			...state,
+			screen: START,
+			paused: true
+		}
+	}
 	return state;
 }
 
@@ -50,6 +57,12 @@ export function pauseGame(){
 export function goConfig(){
 	return {
 		type: 'GOCONFIG'
+	}
+}
+
+export function goToStartScreen(){
+	return {
+		type: 'GOTOSTARTSCREEN'
 	}
 }
 

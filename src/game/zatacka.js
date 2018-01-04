@@ -5,9 +5,8 @@ import Input from './input.js';
 import Collision from './collision.js';
 import Renderer from './renderer.js';
 import Recorder from './recorder.js';
-import Playback from './playback.js';
 
-import store, { pauseGame, startGame, GAME } from '../store.js';
+import store, { pauseGame, startGame, goToStartScreen, GAME } from '../store.js';
 
 export default class Zatacka {
 	constructor(props){
@@ -15,6 +14,7 @@ export default class Zatacka {
 		this.turnSpeed = 4;
 		this.leakTime = 2000;
 		this.leakDuration = 150;
+		this.gameCounter = 0;
 
 		this.input = new Input();
 		this.ready = false;
@@ -41,6 +41,14 @@ export default class Zatacka {
 				if(state.screen === GAME)
 					this.hitSpace();
 			}
+			if(e.keyCode === 27){
+				var state = store.getState();
+				if(state.screen === GAME && state.paused === true){
+					this.stop();
+					this.renderer.clear();
+					store.dispatch(goToStartScreen());
+				}
+			}
 		});
 	}
 
@@ -54,12 +62,6 @@ export default class Zatacka {
 	get running(){
 		return this._running;
 	}
-
-	playback(data){
-		this.playback = new Playback(data);
-		this.playback.start();
-	}
-
 
 	start(){
 		this.renderer = new Renderer({
@@ -75,6 +77,8 @@ export default class Zatacka {
 		});		
 
 		this.movementLines = [];
+		this.gameCounter++;
+		this.currentTime = 0;
 
 		this.playersActive = 0;
 		this.players.forEach((player) => {
@@ -89,7 +93,9 @@ export default class Zatacka {
 
 		this.recorder = new Recorder({
 			width: this.width,
-			height: this.height
+			height: this.height,
+			players: this.players,
+			filename: 'game-' + this.gameCounter + '.json'
 		});
 
 
@@ -112,6 +118,7 @@ export default class Zatacka {
 	update(delta){
 		var playersAlive = 0;
 
+		this.currentTime += delta;
 		this.relativeLeakTime += delta;
 		var leakNow = false;
 		if(this.relativeLeakTime > this.leakTime){
@@ -156,7 +163,7 @@ export default class Zatacka {
 
 		var newLines = this.collision.commitMovements();
 		this.movementLines = this.movementLines.concat(newLines);
-		this.recorder.record(newLines);
+		this.recorder.record(newLines, this.currentTime);
 
 		newLines.forEach((line) => {
 			//a bit dirty: consider multiple lines per player...
@@ -192,9 +199,10 @@ export default class Zatacka {
 
 			this.recorder.export();
 
-			this.running = false;
-			this.ready = false;
 		}
+
+		this.running = false;
+		this.ready = false;
 	}
 
 	pause(){

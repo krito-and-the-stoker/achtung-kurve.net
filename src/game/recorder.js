@@ -8,11 +8,27 @@ export default class Recorder{
 
 		this.width = props.width;
 		this.height = props.height;
+		this.players = props.players;
 		this.steps = [];
+		this.filename = props.filename;
 	}
 
-	record(lines){
-		this.steps.push(lines.slice());
+	record(lines, time){
+		if(this.active){		
+			var newLines = [];
+			lines.forEach((line) => {
+				newLines.push({
+					from: line.from,
+					to: line.to,
+					playerId: line.player.id
+				});
+			});
+
+			this.steps.push({
+				lines: newLines,
+				time: time
+			});
+		}
 	}
 
 	export(){
@@ -25,7 +41,7 @@ export default class Recorder{
 	        var blob = new Blob([data], {type: "octet/stream"});
 	        var url = window.URL.createObjectURL(blob);
 	        a.href = url;
-	        a.download = 'game.json';
+	        a.download = this.filename;
 	        a.click();
 	        window.URL.revokeObjectURL(url);
 		}

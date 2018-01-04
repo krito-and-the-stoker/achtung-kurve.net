@@ -25,7 +25,6 @@ export default class Game extends Component {
   componentDidMount(){
     store.subscribe(() => {
       this.setState(store.getState());
-      // console.log(store.getState());
     });
 
   }
@@ -36,7 +35,7 @@ export default class Game extends Component {
       <div className="Game">
         <StartScreen active={this.state.screen === START} />
       	<ConfigScreen zatacka={this.zatacka} active={this.state.screen === CONFIG} />
-        <PauseScreen zatacka={this.zatacka} active={this.state.paused} />
+        <PauseScreen zatacka={this.zatacka} active={this.state.paused && this.state.screen === GAME} />
       	<Canvas zatacka={this.zatacka} active={this.state.screen === GAME} />
       </div>
     );

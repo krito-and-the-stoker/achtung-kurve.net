@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import './config.css';
-import store, {startGame} from '../store.js';
+import store, {startGame, goToStartScreen, START} from '../store.js';
 
 export default class ConfigScreen extends Component {
 
@@ -10,9 +10,23 @@ export default class ConfigScreen extends Component {
 		this.state = {
 			activePlayers: [],
 		}
+
+		store.subscribe(() => {
+			var state = store.getState();
+			if(state.screen === START){
+				this.setState({
+					...state,
+					activePlayers: []
+				});
+				this.props.zatacka.players.forEach((player => {
+					player.active = false;
+				}));
+			}
+		})
 	}
 
 	handleKeyPress(e){
+		console.log('config', this.props.active);
 		if(this.props.active){		
 			const activePlayers = [];
 			this.props.zatacka.players.forEach((player) => {
@@ -29,12 +43,11 @@ export default class ConfigScreen extends Component {
 			});
 
 			if(e.keyCode === 32 && activePlayers.length > 0){
-				this.setState({
-					...this.state,
-					activePlayers: activePlayers
-				});
-
 				store.dispatch(startGame());
+			}
+
+			if(e.keyCode === 27){
+				store.dispatch(goToStartScreen());
 			}
 		}
 	}

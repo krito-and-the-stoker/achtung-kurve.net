@@ -21,6 +21,11 @@ export default class Renderer {
 		this.ctx.fillRect(0, 0, this.width,this.height);
 	}
 
+	clear(){
+		this.ctx.fillStyle = '#000000';
+		this.ctx.fillRect(0, 0, this.width,this.height);		
+	}
+
 	setDimensions(props){
 		this.width = props.width;
 		this.height = props.height;
