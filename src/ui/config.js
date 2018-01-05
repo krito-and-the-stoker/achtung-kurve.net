@@ -26,7 +26,6 @@ export default class ConfigScreen extends Component {
 	}
 
 	handleKeyPress(e){
-		console.log('config', this.props.active);
 		if(this.props.active){		
 			const activePlayers = [];
 			this.props.zatacka.players.forEach((player) => {

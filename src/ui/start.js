@@ -56,8 +56,10 @@ export default class StartScreen extends Component {
 	}
 
 	startNextGame(){
-		this.currentGame = Math.floor(Math.random()*this.games.length);
-		this.playback.start(this.games[this.currentGame]);
+		if(this.props.active){		
+			this.currentGame = Math.floor(Math.random()*this.games.length);
+			this.playback.start(this.games[this.currentGame]);
+		}
 	}
 
 	render(){
