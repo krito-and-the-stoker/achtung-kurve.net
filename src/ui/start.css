@@ -18,6 +18,7 @@
 	text-align: center;
 	font-size: 1.5vw;
 	color: white;
+	pointer-events: none;
 }
 
 .StartScreen h1{
@@ -27,4 +28,5 @@
 	text-align: center;
 	color: white;
 	font-size: 10vw;
+	pointer-events: none;
 }

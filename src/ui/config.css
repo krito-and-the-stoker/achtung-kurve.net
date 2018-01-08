@@ -17,9 +17,10 @@
 	margin-top: 8vw;
 }
 
-h1{
+.ConfigScreen h1{
 	color: white;
 	text-align: center;
+	pointer-events: none;
 }
 
 
