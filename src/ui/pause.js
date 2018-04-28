@@ -15,12 +15,25 @@ export default class PauseScreen extends Component {
 			return null;
 		}
 		else{		
-			const players = this.state.players.map((player) => {
-				if(player.active)
-					return <li key={player.color.r.toString()+player.color.g.toString()+player.color.b.toString()} style={{color:"rgb("+player.color.r+','+player.color.g+','+player.color.b}}>{player.wins}</li>
-				else
-					return null;
-			});
+			const players = this.state.players
+				.filter(player => player.active)
+				.map((player) => {
+					const key = player.color.r.toString()+player.color.g.toString()+player.color.b.toString()
+					const playerColor = "rgb("+player.color.r+','+player.color.g+','+player.color.b
+					const liStyle = {
+						color: playerColor
+					}
+					const numberStyle = {
+						border: player.alive ? `1px solid ${playerColor}` : null
+					}
+
+					return (
+						<li key={key} style={liStyle}>
+						<p className="wins" style={numberStyle}>{player.wins}</p>
+						<p className="keys">{player.keyNames.left} {player.keyNames.right}</p>
+						<p>{player.alive}</p>
+						</li>)
+				});
 			return (
 				<div className="PauseScreen">
 					<ul>{players}</ul>

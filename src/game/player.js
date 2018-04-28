@@ -5,6 +5,7 @@ export default class Player {
 		this.color = props.color;
 		this.left = props.left;
 		this.right = props.right;
+		this.keyNames = props.keyNames;
 		this.id = props.id;
 		this.active = false;
 		this.wins = 0;
@@ -32,7 +33,7 @@ export default class Player {
 	}
 
 	//create all players with default settings
-	static createAll(props){
+	static createAll(){
 		return [
 		//red: 1q
 			new Player({
@@ -44,6 +45,10 @@ export default class Player {
 				},
 				left: 49,
 				right: 81,
+				keyNames: {
+					left: '1',
+					right: 'q',
+				},
 			}),
 		//cyan: xc
 			new Player({
@@ -55,6 +60,10 @@ export default class Player {
 				},
 				left: 88,
 				right: 67,
+				keyNames: {
+					left: 'x',
+					right: 'c',
+				},
 			}),
 		//yellow: bn
 			new Player({
@@ -62,10 +71,14 @@ export default class Player {
 				color: {
 					r: 255,
 					g: 255,
-					b: 0
+					b: 0,
 				},
 				left: 66,
 				right: 78,
+				keyNames: {
+					left: 'b',
+					right: 'n',
+				},
 			}),
 		//purple: p0
 			new Player({
@@ -77,6 +90,10 @@ export default class Player {
 				},
 				left: 48,
 				right: 80,
+				keyNames: {
+					left: 'p',
+					right: '0',
+				},
 			}),
 		//green: <-,->
 			new Player({
@@ -88,6 +105,10 @@ export default class Player {
 				},
 				left: 37,
 				right: 39,
+				keyNames: {
+					left: '<-',
+					right: '->',
+				},
 			}),
 		//white: mk
 			new Player({
@@ -99,6 +120,10 @@ export default class Player {
 				},
 				left: 77,
 				right: 75,
+				keyNames: {
+					left: 'm',
+					right: 'k',
+				},
 			})
 		];		
 	}

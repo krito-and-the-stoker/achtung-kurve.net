@@ -171,7 +171,7 @@ export default class Zatacka {
 
 		this.players.forEach((player) => {
 			if(player.alive)
-				playersAlive++;			
+				playersAlive++;
 		});
 
 
