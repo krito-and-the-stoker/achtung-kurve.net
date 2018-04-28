@@ -45,10 +45,9 @@ export default class StartScreen extends Component {
 		if(this.props.active)
 			this.startNextGame();
 
+		const ignoredKeys = ['Meta', 'Alt', 'Control', 'Shift', 'CapsLock']
 		document.body.addEventListener('keydown', (e) => {
-			const ignoredKeys = ['Meta', 'Alt', 'Control', 'Shift', 'CapsLock']
 			if (!ignoredKeys.includes(e.key) && this.props.active) {
-				console.log(e)
 				store.dispatch(goConfig());
 			}
 		});
@@ -99,7 +98,7 @@ export default class StartScreen extends Component {
 				<div className="StartScreen">
 					<canvas id="playback"></canvas>
 					<h1>Achtung&nbsp;Kurve</h1>
-					<h2 className="blink">Press any key to play</h2>
+					<h2 className="blink" onClick={(e) => store.dispatch(goConfig())}>Press any key to play</h2>
 					<a className="menu-item" href="/impressum" onClick={(e) => this.toggleImprint(e)}>Impressum</a>
 					{imprint}
 				</div>
