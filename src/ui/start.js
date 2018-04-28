@@ -85,11 +85,13 @@ export default class StartScreen extends Component {
 							<div className="container">
 								<a className="close" onClick={(e) => this.toggleImprint(e)}>x</a>
 								<h3>Impressum</h3>
-								<p>Seitenbetreiber</p>
+								<p>Krito and the Stoker</p>
 								<p>Christoph Franke</p>
-								<p>Reuterstraße 38</p>
-								<p>12047 Berlin</p>
-								<p><a href="mailto:hallo@christophfranke.info">hallo@christophfranke.info</a></p>
+								<p>Fabian Kampa</p>
+								<p>Vogelsanger Straße 138</p>
+								<p>50825 K&ouml;ln</p>
+								<p><a href="https://kritoandthestoker.de" target="_blank">kritoandthestoker.de</a></p>
+								<p><a href="mailto:hallo@kritoandthestoker.de">hallo@kritoandthestoker.de</a></p>
 							</div>
 						</div>
 					);
