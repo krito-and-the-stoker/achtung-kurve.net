@@ -68,7 +68,6 @@ export default class StartScreen extends Component {
 
 	toggleImprint(e){
 		e.preventDefault();
-		// console.log(this.state.showImprint);
 		this.setState({
 			...this.state,
 			showImprint: !this.state.showImprint
@@ -81,12 +80,15 @@ export default class StartScreen extends Component {
 			if(this.state.showImprint){
 				imprint = (
 						<div className="imprint">
-							<h3>Impressum</h3>
-							<p>Seitenbetreiber</p>
-							<p>Christoph Franke</p>
-							<p>Reuterstraße 38</p>
-							<p>12047 Berlin</p>
-							<p><a href="mailto:hallo@christophfranke.info">hallo@christophfranke.info</a></p>
+							<div className="container">
+								<a className="close" onClick={(e) => this.toggleImprint(e)}>x</a>
+								<h3>Impressum</h3>
+								<p>Seitenbetreiber</p>
+								<p>Christoph Franke</p>
+								<p>Reuterstraße 38</p>
+								<p>12047 Berlin</p>
+								<p><a href="mailto:hallo@christophfranke.info">hallo@christophfranke.info</a></p>
+							</div>
 						</div>
 					);
 			}
