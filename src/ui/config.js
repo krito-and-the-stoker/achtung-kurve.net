@@ -65,7 +65,9 @@ export default class ConfigScreen extends Component {
 			var startMessage = activePlayerList.length === 0 ? '':<h1 className="blink">Hit Space to start</h1>;
 			return (
 				<div className="ConfigScreen">
+					<a className="back button" onClick={(e) => store.dispatch(goToStartScreen())}>BACK</a>
 					<h1 className="chooseYourColor">Choose your Color</h1>
+					<p>Press one of the buttons of your color to enter the game</p>
 					<img src="/kurve_tastatur.png" alt="keys"/>
 					<div className="activePlayerList">{activePlayerList}</div>
 					{startMessage}
