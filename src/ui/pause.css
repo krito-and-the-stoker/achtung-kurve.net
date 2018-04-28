@@ -24,3 +24,23 @@ li {
 	display: inline-block;
 	width: 40px;
 }
+.PauseScreen h1 {
+	position: absolute;
+	top: 40vh;
+	left: 0;
+	right: 0;
+	text-align: center;
+	font-size: 40px;
+}
+
+.PauseScreen h2, .PauseScreen h3 {
+	text-align: center;
+	color: white;
+}
+
+.continue {
+	position: absolute;
+	bottom: 10vh;
+	left: 0;
+	right: 0;
+}

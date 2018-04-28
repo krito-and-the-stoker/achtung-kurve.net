@@ -6,6 +6,7 @@ export default class Player {
 		this.left = props.left;
 		this.right = props.right;
 		this.keyNames = props.keyNames;
+		this.name = props.name;
 		this.id = props.id;
 		this.active = false;
 		this.wins = 0;
@@ -49,6 +50,7 @@ export default class Player {
 					left: '1',
 					right: 'q',
 				},
+				name: 'Red',
 			}),
 		//cyan: xc
 			new Player({
@@ -64,6 +66,7 @@ export default class Player {
 					left: 'x',
 					right: 'c',
 				},
+				name: 'Cyan',
 			}),
 		//yellow: bn
 			new Player({
@@ -79,6 +82,7 @@ export default class Player {
 					left: 'b',
 					right: 'n',
 				},
+				name: 'Yellow',
 			}),
 		//purple: p0
 			new Player({
@@ -94,6 +98,7 @@ export default class Player {
 					left: 'p',
 					right: '0',
 				},
+				name: 'Purple',
 			}),
 		//green: <-,->
 			new Player({
@@ -109,6 +114,7 @@ export default class Player {
 					left: '<-',
 					right: '->',
 				},
+				name: 'Green',
 			}),
 		//white: mk
 			new Player({
@@ -124,6 +130,7 @@ export default class Player {
 					left: 'm',
 					right: 'k',
 				},
+				name: 'White',
 			})
 		];		
 	}
