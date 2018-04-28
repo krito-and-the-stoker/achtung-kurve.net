@@ -45,9 +45,12 @@ export default class StartScreen extends Component {
 		if(this.props.active)
 			this.startNextGame();
 
-		document.body.addEventListener('keydown', () => {
-			if(this.props.active)
+		document.body.addEventListener('keydown', (e) => {
+			const ignoredKeys = ['Meta', 'Alt', 'Control', 'Shift', 'CapsLock']
+			if (!ignoredKeys.includes(e.key) && this.props.active) {
+				console.log(e)
 				store.dispatch(goConfig());
+			}
 		});
 	}
 
