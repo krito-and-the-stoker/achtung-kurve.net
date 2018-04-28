@@ -22,8 +22,12 @@ export default class StartScreen extends Component {
 
 		this.playback = new Playback({
 			id: 'playback',
-			onFinished: () => {this.startNextGame();}
+			onFinished: () => {this.startNextGame()}
 		});
+
+    this.setBackdropRef = element => {
+      this.backdrop = element;
+    };
 
 		this.games = [
 			game18,
@@ -54,7 +58,9 @@ export default class StartScreen extends Component {
 	}
 
 	containerClick(e) {
-		// console.log(e)
+		if (e.target === this.backdrop) {
+			this.toggleImprint(e);
+		}
 	}
 
 	componentDidUpdate(){
@@ -85,7 +91,7 @@ export default class StartScreen extends Component {
 			let imprint = null;
 			if(this.state.showImprint){
 				imprint = (
-						<div className="imprint" onClick={this.containerClick}>
+						<div className="imprint" onClick={(e) => this.containerClick(e)} ref={this.setBackdropRef}>
 							<div className="container">
 								<a className="close" onClick={(e) => this.toggleImprint(e)}>x</a>
 								<h3>Impressum</h3>

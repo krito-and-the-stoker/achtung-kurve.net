@@ -11,12 +11,10 @@ import store, {START, CONFIG, GAME} from './store.js';
 
 
 export default class Game extends Component {
-
 	constructor(props){
 		super(props);
 
     this.state = store.getState();
-    
 		this.zatacka = new Zatacka({
       id: 'zatacka',
     });
@@ -26,7 +24,6 @@ export default class Game extends Component {
     store.subscribe(() => {
       this.setState(store.getState());
     });
-
   }
 
 
