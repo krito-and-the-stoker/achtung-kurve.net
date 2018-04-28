@@ -53,6 +53,10 @@ export default class StartScreen extends Component {
 		});
 	}
 
+	containerClick(e) {
+		// console.log(e)
+	}
+
 	componentDidUpdate(){
 		if(this.props.active)
 			this.startNextGame();
@@ -81,16 +85,16 @@ export default class StartScreen extends Component {
 			let imprint = null;
 			if(this.state.showImprint){
 				imprint = (
-						<div className="imprint">
+						<div className="imprint" onClick={this.containerClick}>
 							<div className="container">
 								<a className="close" onClick={(e) => this.toggleImprint(e)}>x</a>
 								<h3>Impressum</h3>
-								<p>Krito and the Stoker</p>
+								<p>Krito and the Stoker GbR</p>
 								<p>Christoph Franke</p>
 								<p>Fabian Kampa</p>
 								<p>Vogelsanger Straße 138</p>
 								<p>50825 K&ouml;ln</p>
-								<p><a href="https://kritoandthestoker.de" target="_blank">kritoandthestoker.de</a></p>
+								<p><a href="https://kritoandthestoker.de" target="_blank" rel="noopener noreferrer">kritoandthestoker.de</a></p>
 								<p><a href="mailto:hallo@kritoandthestoker.de">hallo@kritoandthestoker.de</a></p>
 							</div>
 						</div>
