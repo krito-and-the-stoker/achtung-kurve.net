@@ -30,3 +30,36 @@
 	font-size: 10vw;
 	pointer-events: none;
 }
+
+.StartScreen .menu-item{
+	font-size: 1vw;
+	position: absolute;
+	bottom: 1vw;
+	right: 1vw;
+	color: white;
+	text-decoration: none;
+}
+
+.StartScreen .menu-item:hover{
+	text-decoration: underline;
+}
+
+.imprint{
+	background-color: white;
+	color: black;
+	padding: 15px;
+	position: absolute;
+	top: 0;
+	left: 0;
+	right: 0;
+	bottom: 2vw;
+}
+
+.imprint p{
+	margin: 0;
+}
+
+.imprint h3{
+	margin-top: 0;
+}
+

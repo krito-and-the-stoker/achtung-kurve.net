@@ -35,6 +35,10 @@ export default class StartScreen extends Component {
 			game24,
 			game25,
 		];
+
+		this.state = {
+			showImprint: false
+		};
 	}
 
 	componentDidMount(){
@@ -62,13 +66,37 @@ export default class StartScreen extends Component {
 		}
 	}
 
+	toggleImprint(e){
+		e.preventDefault();
+		// console.log(this.state.showImprint);
+		this.setState({
+			...this.state,
+			showImprint: !this.state.showImprint
+		});
+	}
+
 	render(){
-		if(this.props.active){		
+		if(this.props.active){
+			let imprint = null;
+			if(this.state.showImprint){
+				imprint = (
+						<div className="imprint">
+							<h3>Impressum</h3>
+							<p>Seitenbetreiber</p>
+							<p>Christoph Franke</p>
+							<p>Reuterstraße 38</p>
+							<p>12047 Berlin</p>
+							<p><a href="mailto:hallo@christophfranke.info">hallo@christophfranke.info</a></p>
+						</div>
+					);
+			}
 			return (
 				<div className="StartScreen">
 					<canvas id="playback"></canvas>
 					<h1>Achtung&nbsp;Kurve</h1>
 					<h2 className="blink">Press any key to play</h2>
+					<a className="menu-item" href="/impressum" onClick={(e) => this.toggleImprint(e)}>Impressum</a>
+					{imprint}
 				</div>
 			);
 		}
