@@ -3,7 +3,6 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
-    "bresenham": "0.0.4",
     "keen-tracking": "^1.4.0",
     "mainloop.js": "^1.0.4",
     "raven-js": "^3.24.2",
