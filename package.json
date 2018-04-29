@@ -6,6 +6,7 @@
     "bresenham": "0.0.4",
     "keen-tracking": "^1.4.0",
     "mainloop.js": "^1.0.4",
+    "raven-js": "^3.24.2",
     "react": "^16.2.0",
     "react-dom": "^16.2.0",
     "react-scripts": "1.0.17",
