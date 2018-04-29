@@ -60,7 +60,8 @@ export default class StartScreen extends Component {
 				this.playback.start(game);
 			})
 			// preload next game here
-			this.nextGame = gameData[`game${Math.floor(Math.random()*Object.keys(gameData).length) + 18}`]();
+			const gameIndex = Math.floor(Math.random()*Object.keys(gameData).length) + 18;
+			this.nextGame = gameData[`game${gameIndex}`]();
 		}
 	}
 
