@@ -14,7 +14,6 @@ import game24 from '../data/game-34.json';
 import game25 from '../data/game-35.json';
 
 
-
 export default class StartScreen extends Component {
 
 	constructor(props){

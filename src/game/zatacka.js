@@ -5,6 +5,7 @@ import Input from './input.js';
 import Collision from './collision.js';
 import Renderer from './renderer.js';
 import Recorder from './recorder.js';
+import Tracking from '../tracking/index.js';
 
 import store, { pauseGame, startGame, goToStartScreen, GAME } from '../store.js';
 
@@ -178,8 +179,18 @@ export default class Zatacka {
 		if(playersAlive <= 1 && playersAlive < this.playersActive)
 			this.turnsLeft--;
 
-		if(this.turnsLeft === 0)
+		if(this.turnsLeft === 0) {
 			this.stop();
+			Tracking.game(this.players
+				.filter(player => player.active)
+				.map(player => ({
+					name: player.name,
+					wins: player.wins
+				})), {
+					duration: Math.round(this.currentTime),
+				}
+			);
+		}
 	}
 
 	draw(){

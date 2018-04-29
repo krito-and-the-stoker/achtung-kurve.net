@@ -4,6 +4,7 @@
   "private": true,
   "dependencies": {
     "bresenham": "0.0.4",
+    "keen-tracking": "^1.4.0",
     "mainloop.js": "^1.0.4",
     "react": "^16.2.0",
     "react-dom": "^16.2.0",
