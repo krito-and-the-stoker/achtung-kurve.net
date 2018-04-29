@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import Playback from '../game/playback.js';
+import Playback from '../common/game/playback.js';
 import './start.css';
 import store, { goConfig } from '../store.js';
 import gameData from '../data/index.js';

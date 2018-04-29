@@ -2,7 +2,6 @@ import MainLoop from 'mainloop.js';
 
 import Renderer from './renderer.js';
 import Line from './line.js';
-import store, { START } from '../store.js';
 
 export default class Playback{
 
@@ -38,13 +37,6 @@ export default class Playback{
 
 		this.width = data.width;
 		this.height = data.height;
-
-		store.subscribe(() => {
-			var state = store.getState();
-			if(state.screen !== START){
-				this.stop();
-			}
-		})
 	}
 
 	start(data){

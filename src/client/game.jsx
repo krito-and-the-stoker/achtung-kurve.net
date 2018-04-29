@@ -1,11 +1,11 @@
 import React, { Component } from 'react';
 
-import ConfigScreen from './ui/config.js';
-import PauseScreen from './ui/pause.js';
-import StartScreen from './ui/start.js';
+import ConfigScreen from './ui/config.jsx';
+import PauseScreen from './ui/pause.jsx';
+import StartScreen from './ui/start.jsx';
+import Canvas from './ui/canvas.jsx';
 
-import Canvas from './ui/canvas.js';
-import Zatacka from './game/zatacka.js';
+import Zatacka from './common/game/zatacka.js';
 
 import store, {START, CONFIG, GAME} from './store.js';
 
