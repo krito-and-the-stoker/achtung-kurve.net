@@ -39,9 +39,9 @@ export default class Renderer {
 
 	draw(lines){
 		lines.forEach((line) => {
-			this.ctx.fillStyle = 'rgb(' + line.color.r + ',' + line.color.g + ',' + line.color.b + ')';
 			var points = line.rasterize();
 			points.forEach((point) => {
+				this.ctx.fillStyle = `rgba(${line.color.r}, ${line.color.g}, ${line.color.b}, ${point.intensity})`;
 				this.ctx.fillRect(point.x, point.y, 1, 1);
 			});
 		});

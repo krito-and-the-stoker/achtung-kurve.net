@@ -5,6 +5,7 @@ export default class Line{
 		this.to = props.to;
 		this.player = props.player;
 		this.thickness = 2.5;
+		this.decay = 1.5;
 
 		this.delta = null;
 		this.points = null;
@@ -15,7 +16,7 @@ export default class Line{
 	}
 
 	rasterize(){
-		if(this.points === null){		
+		if(this.points === null){
 			var leftbottom = {
 				x: Math.floor(Math.min(this.from.x, this.to.x) - 0.5*this.thickness),
 				y: Math.floor(Math.min(this.from.y, this.to.y) - 0.5*this.thickness)
@@ -43,8 +44,9 @@ export default class Line{
 						x: x,
 						y: y
 					};
-					point.d = this.distance(point);
-					if( point.d <= 0.5*this.thickness){
+					point.distance = this.distance(point);
+					if( point.distance <= 0.5*this.thickness){
+						point.intensity = point.distance < 0.5*this.thickness - this.decay ? 1 : (0.5*this.thickness - point.distance) / this.decay;
 						this.points.push(point);
 					}
 				}
