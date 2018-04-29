@@ -22,4 +22,5 @@ $ npm run build
 ## Contribution
 
 We are open for contributers! Feel free to fork this repository, play with it and send us pull requests.
+
 Happy Coding :heart:
