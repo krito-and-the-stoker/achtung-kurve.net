@@ -3,7 +3,7 @@ import KeenTracking from 'keen-tracking'
 
 class Tracking {
   constructor() {
-    this.key = process.env.keen;
+    this.key = process.env.REACT_APP_KEEN_SECRET;
     if (this.key) {    
       this.client = new KeenTracking({
           projectId: '5ae50594c9e77c0001cc21e7',

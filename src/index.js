@@ -7,7 +7,7 @@ import Raven from 'raven-js';
 import './index.css';
 
 Raven
-    .config(process.env.raven)
+    .config(process.env.REACT_APP_RAVEN_ENDPOINT)
     .install();
 
 Raven.context(function () {
