@@ -2,16 +2,8 @@ import React, { Component } from 'react';
 import Playback from '../game/playback.js';
 import './start.css';
 import store, { goConfig } from '../store.js';
+import gameData from '../data/index.js';
 
-
-import game18 from '../data/game-28.json';
-import game19 from '../data/game-39.json';
-import game20 from '../data/game-30.json';
-import game21 from '../data/game-31.json';
-import game22 from '../data/game-32.json';
-import game23 from '../data/game-33.json';
-import game24 from '../data/game-34.json';
-import game25 from '../data/game-35.json';
 
 
 export default class StartScreen extends Component {
@@ -28,20 +20,12 @@ export default class StartScreen extends Component {
       this.backdrop = element;
     };
 
-		this.games = [
-			game18,
-			game19,
-			game20,
-			game21,
-			game22,
-			game23,
-			game24,
-			game25,
-		];
-
 		this.state = {
 			showImprint: false
 		};
+
+		// load first game
+		this.nextGame = gameData[`game${Math.floor(Math.random()*Object.keys(gameData).length) + 18}`]();
 	}
 
 	componentDidMount(){
@@ -72,8 +56,11 @@ export default class StartScreen extends Component {
 
 	startNextGame(){
 		if(this.props.active){		
-			this.currentGame = Math.floor(Math.random()*this.games.length);
-			this.playback.start(this.games[this.currentGame]);
+			this.nextGame.then((game) => {
+				this.playback.start(game);
+			})
+			// preload next game here
+			this.nextGame = gameData[`game${Math.floor(Math.random()*Object.keys(gameData).length) + 18}`]();
 		}
 	}
 
