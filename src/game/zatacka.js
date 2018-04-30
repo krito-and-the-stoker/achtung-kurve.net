@@ -181,13 +181,9 @@ export default class Zatacka {
 
 		if(this.turnsLeft === 0) {
 			this.stop();
-			Tracking.game(this.players
-				.filter(player => player.active)
-				.map(player => ({
-					name: player.name,
-					wins: player.wins
-				})), {
+			Tracking.game(this.players, {
 					duration: Math.round(this.currentTime),
+					gameNumber: this.gameCounter
 				}
 			);
 		}
