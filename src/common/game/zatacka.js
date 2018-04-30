@@ -19,8 +19,6 @@ export default class Zatacka {
 		this.ready = false;
 		this._running = false;
 
-		this.id = props.id;
-
 		this.players = Player.createAll();
 	}
 
@@ -33,17 +31,10 @@ export default class Zatacka {
 	}
 
 	start(){
-		this.renderer = new Renderer({
-			canvas: document.getElementById(this.id)
-		});
-
-		this.width = this.renderer.width;
-		this.height = this.renderer.height;
-
 		this.collision = new Collision({
 			width: this.width,
 			height: this.height
-		});		
+		});
 
 		this.movementLines = [];
 		this.gameCounter++;
@@ -74,10 +65,6 @@ export default class Zatacka {
 		//set mainloop and start it
 		MainLoop.setUpdate((delta) => {
 			this.update(delta);
-		});
-
-		MainLoop.setDraw(() => {
-			this.draw();
 		});
 
 		this.ready = true;
@@ -158,10 +145,8 @@ export default class Zatacka {
 				}
 			);
 		}
-	}
 
-	draw(){
-		this.renderer.draw(this.movementLines);
+		this.server.push(this.movemntLines);
 		this.movementLines = [];
 	}
 

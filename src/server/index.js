@@ -1,7 +1,10 @@
+import socketIO from 'socket.io'
+
 var io = require('socket.io')(3005);
+
+
 io.on('connection', function (socket) {
-  socket.emit('news', { hello: 'world' });
-  socket.on('my other event', function (data) {
+  socket.on('startGame', function (data) {
     console.log(data);
   });
 });
