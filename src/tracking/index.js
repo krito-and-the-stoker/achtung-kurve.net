@@ -42,7 +42,7 @@ class Tracking {
       this.client.recordEvent('games', {
         players: playerNames,
         duration: gameInfo.duration,
-        gameNumber: gameInfo.gameNumber
+        gameNumber: gameInfo.gameNumber,
         host: window.location.host,
         sessionId: this.uuid,
       }); 
