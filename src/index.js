@@ -3,6 +3,8 @@ import ReactDOM from 'react-dom';
 import Game from './game.js';
 import Tracking from './tracking/index.js';
 import Raven from 'raven-js';
+import 'array.prototype.fill'
+import 'array.prototype.includes'
 
 import './index.css';
 
