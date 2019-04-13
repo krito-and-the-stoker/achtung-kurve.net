@@ -92,8 +92,8 @@ export default class Player {
 					g: 0,
 					b: 255
 				},
-				left: 48,
-				right: 80,
+				left: 80,
+				right: 48,
 				keyNames: {
 					left: 'p',
 					right: '0',
