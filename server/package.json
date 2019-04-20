@@ -1,0 +1,23 @@
+{
+  "name": "achtung-kurve",
+  "version": "0.1.0",
+  "private": true,
+  "dependencies": {
+    "@babel/cli": "^7.4.3",
+    "@babel/core": "^7.4.3",
+    "@babel/preset-env": "^7.4.3",
+    "concurrently": "^4.1.0",
+    "dotenv": "4.0.0",
+    "jest": "^24.7.1",
+    "keen-tracking": "^1.4.0",
+    "mainloop.js": "^1.0.4",
+    "socket.io": "^2.1.0"
+  },
+  "scripts": {
+    "build": "babel index.js -d dist",
+    "start": "node dist/index.js",
+    "server": "NODE_ENV=development nodemon index.js --exec babel",
+    "serve": "NODE_ENV=production babel index.js",
+    "dev": "NODE_ENV=development nodemon --ignore dist --exec npm run build && npm start"
+  }
+}
