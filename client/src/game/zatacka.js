@@ -6,6 +6,7 @@ import Collision from './collision.js';
 import Renderer from './renderer.js';
 import Recorder from './recorder.js';
 
+import store, { pauseGame, startGame, goToStartScreen, GAME } from '../store.js';
 
 export default class Zatacka {
 	constructor(props){
@@ -19,11 +20,42 @@ export default class Zatacka {
 		this.ready = false;
 		this._running = false;
 
+		this.id = props.id;
+
 		this.players = Player.createAll();
+
+		//start automatically
+		store.subscribe(() => {
+			var state = store.getState();
+			if(state.screen === GAME){
+				if(!state.paused && !this.running)
+					this.resume();
+				if(state.paused && this.running)
+					this.pause();
+			}
+		});
+
+		document.body.addEventListener('keydown', (e) => {
+			var state = store.getState();
+			if(e.keyCode === 32){
+				if(state.screen === GAME)
+					this.hitSpace();
+			}
+			if(e.keyCode === 27){
+				if(state.screen === GAME && state.paused === true){
+					this.stop();
+					this.renderer.clear();
+					store.dispatch(goToStartScreen());
+				}
+			}
+		});
 	}
 
 	set running(value){
 		this._running = value;
+		if(this._running === false){
+			store.dispatch(pauseGame());
+		}
 	}
 
 	get running(){
@@ -31,10 +63,17 @@ export default class Zatacka {
 	}
 
 	start(){
+		this.renderer = new Renderer({
+			canvas: document.getElementById(this.id)
+		});
+
+		this.width = this.renderer.width;
+		this.height = this.renderer.height;
+
 		this.collision = new Collision({
 			width: this.width,
 			height: this.height
-		});
+		});		
 
 		this.movementLines = [];
 		this.gameCounter++;
@@ -65,6 +104,10 @@ export default class Zatacka {
 		//set mainloop and start it
 		MainLoop.setUpdate((delta) => {
 			this.update(delta);
+		});
+
+		MainLoop.setDraw(() => {
+			this.draw();
 		});
 
 		this.ready = true;
@@ -98,6 +141,7 @@ export default class Zatacka {
 		});
 
 		this.players.forEach((player) => {
+
 			if(player.alive){
 				// die on the edge
 				player.alive = this.collision.positionValid(player.position);
@@ -113,6 +157,7 @@ export default class Zatacka {
 				else
 					this.collision.tryToMove(player, to);
 			}
+
 		});
 
 		var newLines = this.collision.commitMovements();
@@ -133,20 +178,12 @@ export default class Zatacka {
 		if(playersAlive <= 1 && playersAlive < this.playersActive)
 			this.turnsLeft--;
 
-		if(this.turnsLeft === 0) {
+		if(this.turnsLeft === 0)
 			this.stop();
-			// Tracking.game(this.players
-			// 	.filter(player => player.active)
-			// 	.map(player => ({
-			// 		name: player.name,
-			// 		wins: player.wins
-			// 	})), {
-			// 		duration: Math.round(this.currentTime),
-			// 	}
-			// );
-		}
+	}
 
-		this.server.push(this.movemntLines);
+	draw(){
+		this.renderer.draw(this.movementLines);
 		this.movementLines = [];
 	}
 
@@ -182,6 +219,15 @@ export default class Zatacka {
 			this.running = true;
 		}
 
+	}
+
+	hitSpace(){
+		if(this.running){
+			store.dispatch(pauseGame());
+		}
+		else{
+			store.dispatch(startGame());
+		}
 	}
 
 }
