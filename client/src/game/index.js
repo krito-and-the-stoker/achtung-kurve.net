@@ -1,22 +1,22 @@
+import MainLoop from 'mainloop.js'
 import io from 'socket.io-client'
 
 const gameServer = 'http://localhost:3005';
 
-class ZatackaClient {
-	constructor(props) {
-		this.socket = io(gameServer);
+const draw = () => {
+	console.log('drawing')
+}
 
-		this.id = props.id;
+const initialize = () => {
+	const socket = io(gameServer)
+	console.log(socket)
 
-		this.renderer = new Renderer({
-			canvas: document.getElementById(this.id)
-		});
+	MainLoop.setDraw(() => {
+		this.draw();
+	})
+}
 
-		this.width = this.renderer.width;
-		this.height = this.renderer.height;
-
-		MainLoop.setDraw(() => {
-			this.draw();
-		});
-	}
+export default {
+	initialize,
+	draw
 }
