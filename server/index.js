@@ -11,7 +11,7 @@ io.on('connection', socket => {
   	console.log('game started')
   	const recorder = new Recorder({
   		...data,
-  		filename: `data/game-${(new Date()).getTime()}`
+  		filename: `data/game-${(new Date()).getTime()}.json`
   	})
 
   	const record = data => recorder.record(data)
