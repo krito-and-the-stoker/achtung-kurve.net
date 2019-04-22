@@ -1,10 +1,11 @@
 import io from 'socket.io-client'
 
 
-const server = 'localhost:3005'
+const server = process.env.REACT_APP_GAMESERVER
 
 let socket = null
 const initialize = () => {
+	console.log(`connecting to ${server}`)
 	socket = io(server)
 }
 
