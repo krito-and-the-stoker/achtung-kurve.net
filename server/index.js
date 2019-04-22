@@ -1,12 +1,28 @@
 import socketIO from 'socket.io'
+import Recorder from './recorder'
+
 const io = socketIO(3005);
 
 
 io.on('connection', socket => {
 	console.log('client connected')
-  socket.on('tick', data => {
-    socket.emit('tick', data)
-  });
+
+  socket.on('start', data => {
+  	console.log('game started')
+  	const recorder = new Recorder({
+  		...data,
+  		filename: `data/game-${(new Date()).getTime()}`
+  	})
+
+  	const record = data => recorder.record(data)
+	  socket.on('step', record)
+
+	  socket.on('stop', () => {
+	  	socket.off('step', record)
+	  	recorder.export()
+	  })
+  })
+
 });
 
 console.log('listening on Port 3005');

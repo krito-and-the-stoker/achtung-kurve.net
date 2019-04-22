@@ -1,12 +1,13 @@
 import MainLoop from 'mainloop.js';
 
-import Player from './player.js';
-import Input from './input.js';
-import Collision from './collision.js';
-import Renderer from './renderer.js';
-import Recorder from './recorder.js';
+import Player from './player'
+import Input from './input'
+import Collision from './collision'
+import Renderer from './renderer'
+import Recorder from './recorder'
+import Connection from './connection'
 
-import store, { pauseGame, startGame, goToStartScreen, GAME } from '../store.js';
+import store, { pauseGame, startGame, goToStartScreen, GAME } from '../store'
 
 export default class Zatacka {
 	constructor(props){
@@ -23,6 +24,7 @@ export default class Zatacka {
 		this.id = props.id;
 
 		this.players = Player.createAll();
+		Connection.initialize()
 
 		//start automatically
 		store.subscribe(() => {
@@ -97,6 +99,12 @@ export default class Zatacka {
 			filename: 'game-' + this.gameCounter + '.json'
 		});
 
+		Connection.start({
+			width: this.width,
+			height: this.height,
+			players: this.players,
+		})
+
 
 		this.relativeLeakTime = 0;
 		this.turnsLeft = 10;
@@ -163,6 +171,7 @@ export default class Zatacka {
 		var newLines = this.collision.commitMovements();
 		this.movementLines = this.movementLines.concat(newLines);
 		this.recorder.record(newLines, this.currentTime);
+		Connection.step(newLines, this.currentTime)
 
 		newLines.forEach((line) => {
 			//a bit dirty: consider multiple lines per player...
@@ -197,7 +206,7 @@ export default class Zatacka {
 			});
 
 			this.recorder.export();
-
+			Connection.stop()
 		}
 
 		this.running = false;
