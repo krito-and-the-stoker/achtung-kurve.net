@@ -17,10 +17,12 @@ io.on('connection', socket => {
   	const record = data => recorder.record(data)
 	  socket.on('step', record)
 
-	  socket.on('stop', () => {
+	  const stop = () => {
 	  	socket.off('step', record)
+	  	socket.off('stop', stop)
 	  	recorder.export()
-	  })
+	  }
+	  socket.on('stop', stop)
   })
 
 });
