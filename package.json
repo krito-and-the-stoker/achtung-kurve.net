@@ -4,7 +4,9 @@
   "description": "This is a remake of the famous game Achtung, die Kurve! Internationally, it is also known as Zatacka! It is client only and expected to be run on a static hosting.",
   "main": "index.js",
   "scripts": {
-    "dev": "concurrently \"cd server && npm run dev\" \"cd client && yarn start\""
+    "dev": "concurrently \"cd server && npm run dev\" \"cd client && yarn start\"",
+    "build": "cd client && yarn build",
+    "start": "cd server && npm run build && npm start"
   },
   "repository": {
     "type": "git",
