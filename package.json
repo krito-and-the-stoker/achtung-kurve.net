@@ -8,7 +8,8 @@
   },
   "scripts": {
     "dev": "concurrently \"cd server && npm run dev\" \"cd client && yarn start\"",
-    "build": "cd client && yarn build",
+    "buildFrontend": "cd client && yarn build",
+    "build": "cd server && npm install",
     "start": "cd server && npm run build && npm start"
   },
   "repository": {
