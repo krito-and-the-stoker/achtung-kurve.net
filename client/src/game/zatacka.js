@@ -11,8 +11,7 @@ import store, { pauseGame, startGame, goToStartScreen, GAME } from '../store'
 
 export default class Zatacka {
 	constructor(props){
-		// this.speed = 150
-		this.speed = 50
+		this.speed = 150
 		this.turnSpeed = 4
 		this.leakTime = 2000
 		this.leakDuration = 150
@@ -120,7 +119,6 @@ export default class Zatacka {
 			},
 			step: data => {
 				if (data.id !== this.id && data.lines.length > 0) {
-					console.log('received lines', data.lines)
 					const newLines = data.lines.map(line => new Line({
 						from: line.from,
 						to: line.to,

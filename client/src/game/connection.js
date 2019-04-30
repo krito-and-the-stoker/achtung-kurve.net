@@ -19,10 +19,6 @@ const step = (lines, time) => {
 		})
 	})
 
-	if (newLines.length > 0) {
-		console.log('sending new lines', newLines)
-	}
-
 	socket.emit('step', {
 		lines: newLines,
 		time: time
