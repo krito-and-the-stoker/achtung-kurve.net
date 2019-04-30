@@ -19,14 +19,21 @@ const step = (lines, time) => {
 		})
 	})
 
+	if (newLines.length > 0) {
+		console.log('sending new lines', newLines)
+	}
+
 	socket.emit('step', {
 		lines: newLines,
 		time: time
 	})
 }
 
-const start = ({ width, height, players }) => {
-	socket.emit('start', { width, height, players })
+const start = ({ width, height, players, start, stop, step }) => {
+	socket.emit('ready', { width, height, players })
+	socket.on('start', start)
+	socket.on('stop', stop)
+	socket.on('step', step)
 }
 
 const stop = () => {

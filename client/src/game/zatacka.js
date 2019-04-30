@@ -4,53 +4,54 @@ import Player from './player'
 import Input from './input'
 import Collision from './collision'
 import Renderer from './renderer'
-import Recorder from './recorder'
 import Connection from './connection'
+import Line from './line'
 
 import store, { pauseGame, startGame, goToStartScreen, GAME } from '../store'
 
 export default class Zatacka {
 	constructor(props){
-		this.speed = 150;
-		this.turnSpeed = 4;
-		this.leakTime = 2000;
-		this.leakDuration = 150;
-		this.gameCounter = 0;
+		// this.speed = 150
+		this.speed = 50
+		this.turnSpeed = 4
+		this.leakTime = 2000
+		this.leakDuration = 150
+		this.gameCounter = 0
 
-		this.input = new Input();
-		this.ready = false;
-		this._running = false;
+		this.input = new Input()
+		this.ready = false
+		this._running = false
 
-		this.id = props.id;
+		this.id = props.id
 
-		this.players = Player.createAll();
+		this.players = Player.createAll()
 		Connection.initialize()
 
 		//start automatically
 		store.subscribe(() => {
-			var state = store.getState();
+			var state = store.getState()
 			if(state.screen === GAME){
 				if(!state.paused && !this.running)
-					this.resume();
+					this.resume()
 				if(state.paused && this.running)
-					this.pause();
+					this.pause()
 			}
-		});
+		})
 
 		document.body.addEventListener('keydown', (e) => {
-			var state = store.getState();
+			var state = store.getState()
 			if(e.keyCode === 32){
 				if(state.screen === GAME)
-					this.hitSpace();
+					this.hitSpace()
 			}
 			if(e.keyCode === 27){
 				if(state.screen === GAME && state.paused === true){
-					this.stop();
-					this.renderer.clear();
-					store.dispatch(goToStartScreen());
+					this.stop()
+					this.renderer.clear()
+					store.dispatch(goToStartScreen())
 				}
 			}
-		});
+		})
 	}
 
 	set running(value){
@@ -92,34 +93,45 @@ export default class Zatacka {
 				this.playersActive++;
 		});
 
-		this.recorder = new Recorder({
-			width: this.width,
-			height: this.height,
-			players: this.players,
-			filename: 'game-' + this.gameCounter + '.json'
-		});
-
 		Connection.start({
 			width: this.width,
 			height: this.height,
 			players: this.players,
+			stop: () => {
+				console.log('game stopped')
+				this.stop()
+			},
+			start: id => {
+				this.id = id
+				this.relativeLeakTime = 0
+				this.turnsLeft = 10
+
+				//set mainloop and start it
+				MainLoop.setUpdate((delta) => {
+					this.update(delta)
+				})
+
+				MainLoop.setDraw(() => {
+					this.draw()
+				})
+
+				this.ready = true
+				this.resume()
+			},
+			step: data => {
+				if (data.id !== this.id && data.lines.length > 0) {
+					console.log('received lines', data.lines)
+					const newLines = data.lines.map(line => new Line({
+						from: line.from,
+						to: line.to,
+						player: this.players[line.playerId]
+					}))
+					this.movementLines = this.movementLines.concat(newLines)
+				}
+			}
 		})
 
 
-		this.relativeLeakTime = 0;
-		this.turnsLeft = 10;
-
-		//set mainloop and start it
-		MainLoop.setUpdate((delta) => {
-			this.update(delta);
-		});
-
-		MainLoop.setDraw(() => {
-			this.draw();
-		});
-
-		this.ready = true;
-		this.resume();
 	}
 
 	update(delta){
@@ -168,9 +180,8 @@ export default class Zatacka {
 
 		});
 
-		var newLines = this.collision.commitMovements();
-		this.movementLines = this.movementLines.concat(newLines);
-		this.recorder.record(newLines, this.currentTime);
+		var newLines = this.collision.commitMovements()
+		this.movementLines = this.movementLines.concat(newLines)
 		Connection.step(newLines, this.currentTime)
 
 		newLines.forEach((line) => {
@@ -184,16 +195,16 @@ export default class Zatacka {
 		});
 
 
-		if(playersAlive <= 1 && playersAlive < this.playersActive)
-			this.turnsLeft--;
+		// if(playersAlive <= 1 && playersAlive < this.playersActive)
+		// 	this.turnsLeft--;
 
-		if(this.turnsLeft === 0)
-			this.stop();
+		// if(this.turnsLeft === 0)
+		// 	this.stop();
 	}
 
 	draw(){
-		this.renderer.draw(this.movementLines);
-		this.movementLines = [];
+		this.renderer.draw(this.movementLines)
+		this.movementLines = []
 	}
 
 	stop(){
@@ -205,7 +216,6 @@ export default class Zatacka {
 					player.wins++;
 			});
 
-			this.recorder.export();
 			Connection.stop()
 		}
 
