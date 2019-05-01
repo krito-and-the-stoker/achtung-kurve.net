@@ -105,6 +105,8 @@ export default class Zatacka {
 				this.relativeLeakTime = 0
 				this.turnsLeft = 10
 
+				console.log('starting game')
+
 				//set mainloop and start it
 				MainLoop.setUpdate((delta) => {
 					this.update(delta)
