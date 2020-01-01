@@ -87,9 +87,29 @@ export default class Zatacka {
 				height: this.height
 			};
 			player.reset();
+
+
 			if(player.active)
 				this.playersActive++;
 		});
+
+		const distanceOk = () => {		
+			const distanceHighEnough = (pos1, pos2) => Math.abs(pos1.x - pos2.x) > 0.01 * this.width &&
+				Math.abs(pos1.y - pos2.y) > 0.1 * this.height
+
+			return this.players.every(player => this.players.every(other => player === other || distanceHighEnough(player.position, other.position)))
+		}
+
+		let guard = 0
+		while (!distanceOk() && guard < 1000) {
+			this.players.forEach(player => player.reset())
+			guard += 1
+		}
+
+		if (!distanceOk()) {
+			console.log('distance calculation failed')
+		}
+
 
 		this.recorder = new Recorder({
 			width: this.width,

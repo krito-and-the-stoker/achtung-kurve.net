@@ -16,8 +16,8 @@ export default class Player {
 		this.alive = this.active;
 		this.direction = 2*Math.PI*Math.random();
 		this.position = {
-			x: Math.floor(this.width*Math.random()),
-			y: Math.floor(this.height*Math.random())
+			x: Math.floor(this.width*(0.1 + 0.8*Math.random())),
+			y: Math.floor(this.height*(0.1 + 0.8*Math.random()))
 		};
 	}
 
