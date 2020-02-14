@@ -1,7 +1,6 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import Game from './game.js';
-import Tracking from './tracking/index.js';
 import Raven from 'raven-js';
 import 'array.prototype.fill'
 import 'array.prototype.includes'
@@ -14,5 +13,4 @@ Raven
 
 Raven.context(function () {
 	ReactDOM.render(<Game />, document.getElementById('root'));
-	Tracking.pageView('Home');
 });
