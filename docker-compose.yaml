@@ -1,0 +1,14 @@
+services:
+  achtungkurve:
+    build: .
+    working_dir: /app
+    volumes:
+      - ./src:/app/src
+      - ./public:/app/public
+      - ./assets:/app/assets
+      - ./build:/app/build
+    ports:
+      - "3000:3000"  # Change this if your app runs on a different port
+    command: ["rpm", "run", "start"]
+    environment:
+      - NODE_ENV=development
