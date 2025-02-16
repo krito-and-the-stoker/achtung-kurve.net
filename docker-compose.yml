@@ -1,12 +1,13 @@
 services:
   achtungkurve:
-    build: .
+    build:
+      context: ./frontend
     working_dir: /app
     volumes:
-      - ./src:/app/src
-      - ./public:/app/public
+      - ./frontend/src:/app/src
+      - ./frontend/public:/app/public
     ports:
-      - "3000:3000"  # Change this if your app runs on a different port
+      - "3000:3000"
     command: ["npm", "run", "dev"]
     environment:
       - NODE_ENV=development

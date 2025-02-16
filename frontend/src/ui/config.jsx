@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import './config.css';
+import track from '../track';
 import store, {startGame, goToStartScreen, START} from '../store.js';
 
 export default class ConfigScreen extends Component {
@@ -42,6 +43,7 @@ export default class ConfigScreen extends Component {
 			});
 
 			if(e.keyCode === 32 && activePlayers.length > 0){
+				track('GAME', { players: activePlayers.length })
 				store.dispatch(startGame());
 			}
 

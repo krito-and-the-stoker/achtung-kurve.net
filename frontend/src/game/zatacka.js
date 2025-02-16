@@ -1,5 +1,7 @@
 import MainLoop from 'mainloop.js';
 
+import track from '../track';
+
 import Player from './player.js';
 import Input from './input.js';
 import Collision from './collision.js';
@@ -91,6 +93,8 @@ export default class Zatacka {
 			if(player.active)
 				this.playersActive++;
 		});
+
+		track('ROUND', { players: this.playersActive })
 
 		const distanceOk = () => {		
 			const distanceHighEnough = (pos1, pos2) => Math.abs(pos1.x - pos2.x) > 0.01 * this.width &&
