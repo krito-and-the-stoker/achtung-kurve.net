@@ -2,7 +2,6 @@ services:
   achtungkurve:
     build:
       context: ./frontend
-    working_dir: /app
     volumes:
       - ./frontend/src:/app/src
       - ./frontend/public:/app/public
@@ -11,3 +10,9 @@ services:
     command: ["npm", "run", "dev"]
     environment:
       - NODE_ENV=development
+
+  echo:
+    build:
+      context: ./backend
+    ports:
+      - "3001:80"

@@ -4,24 +4,25 @@ const data = []
 let session = null
 let game = null
 
-export default (event, parameters) => {
+export default (type, data) => {
     if (!session) {
         session = md5(Math.random())
     }
 
-    if (event === 'GAME') {
+    if (type === 'GAME') {
         game = md5(Math.random())
     }
 
-    data.push({
-        ...parameters,
-        event,
+    const event = {
+        data: JSON.stringify(data),
+        type,
         game,
         session,
         user: md5(fingerprint()),
-    })
+    }
 
-    console.log(data[data.length-1])
+    data.push(event)
+    console.log(event)
 }
 
 const fingerprint = () => {
