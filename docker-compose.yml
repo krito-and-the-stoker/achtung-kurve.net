@@ -5,10 +5,8 @@ services:
     volumes:
       - ./src:/app/src
       - ./public:/app/public
-      - ./assets:/app/assets
-      - ./build:/app/build
     ports:
       - "3000:3000"  # Change this if your app runs on a different port
-    command: ["rpm", "run", "start"]
+    command: ["npm", "run", "dev"]
     environment:
       - NODE_ENV=development

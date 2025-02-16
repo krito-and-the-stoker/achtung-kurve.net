@@ -1,4 +1,4 @@
-FROM node:13.5
+FROM node:22
 
 # Set working directory
 WORKDIR /app
@@ -10,4 +10,7 @@ COPY package*.json ./
 RUN npm ci
 
 # Copy the rest of the application files
-COPY . .
+COPY index.html vite.config.js ./
+COPY ./src ./src
+COPY ./public ./public
+
