@@ -7,9 +7,10 @@ import gameData from '../data/index.js';
 
 
 export default class StartScreen extends Component {
-
 	constructor(props){
 		super(props);
+
+		StartScreen.isRunning = true
 
 		this.playback = new Playback({
 			id: 'playback',

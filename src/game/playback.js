@@ -2,7 +2,7 @@ import MainLoop from 'mainloop.js';
 
 import Renderer from './renderer.js';
 import Line from './line.js';
-import store, { START } from '../store.js';
+import store, { START } from '../store.js';
 
 export default class Playback{
 
@@ -50,8 +50,13 @@ export default class Playback{
 	start(data){
 		if(!this.running){
 			this.prepareData(data);
+			const canvas = document.getElementById(this.id)
+			if (!canvas) {
+				console.warn('could not find canvas with id', this.id)
+				return
+			}
 			this.renderer = new Renderer({
-				canvas: document.getElementById(this.id)
+				canvas
 			});
 
 			this.renderer.setDimensions({

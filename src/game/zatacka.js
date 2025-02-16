@@ -106,7 +106,7 @@ export default class Zatacka {
 		}
 
 		if (!distanceOk()) {
-			console.log('distance calculation failed')
+			console.warn('distance calculation failed')
 		}
 
 

@@ -3,6 +3,10 @@
 
 export default class Renderer {
 	constructor(props){
+		if (!props.canvas) {
+			console.error('Renderer called without canvas, will crash soon')
+		}
+
 		//set up canvas
 		this.canvas = props.canvas;
 		this.canvas.focus();

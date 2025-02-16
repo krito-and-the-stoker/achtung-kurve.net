@@ -1,13 +1,13 @@
 import React, { Component } from 'react';
 
-import ConfigScreen from './ui/config.js';
-import PauseScreen from './ui/pause.js';
-import StartScreen from './ui/start.js';
+import ConfigScreen from './ui/config';
+import PauseScreen from './ui/pause';
+import StartScreen from './ui/start';
 
-import Canvas from './ui/canvas.js';
-import Zatacka from './game/zatacka.js';
+import Canvas from './ui/canvas';
+import Zatacka from './game/zatacka';
 
-import store, {START, CONFIG, GAME} from './store.js';
+import store, {START, CONFIG, GAME} from './store';
 
 
 export default class Game extends Component {
