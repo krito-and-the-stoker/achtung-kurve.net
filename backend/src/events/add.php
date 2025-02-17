@@ -1,6 +1,6 @@
 <?php
 
-$pdo = require('db.php');
+$pdo = require('include/db.php');
 
 try {
     // Read incoming JSON data from the POST request

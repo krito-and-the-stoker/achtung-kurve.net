@@ -28,10 +28,7 @@ export default async (type, data) => {
             },
             body: JSON.stringify(event),
         })
-        if (response.ok) {
-            console.log(await response.text())
-            console.log('added', event)
-        } else {
+        if (!response.ok) {
             console.error('failed to add', event, await response.error())
         }
     } catch(e) {
