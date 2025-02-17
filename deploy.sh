@@ -4,20 +4,16 @@
 USER_NAME="ssh300006351"
 SERVER_NAME="ngcobalt64.manitu.net"
 REMOTE_DIR="/home/sites/site100035030/web/achtungkurve.net"
-LOCAL_SCRIPTS="backend/src"
 LOCAL_BUILD="frontend/dist"
 
 # Ensure LOCAL_DIR exists
-if [ ! -d "$LOCAL_DIR" ]; then
-    echo "Error: Local directory '$LOCAL_DIR' does not exist."
+if [ ! -d "$LOCAL_BUILD" ]; then
+    echo "Error: Build directory '$LOCAL_BUILD' does not exist."
     exit 1
 fi
 
-cd frontend && npm run build && cd ..
-
-# Run rsync to upload the directory
-cp -R "$LOCAL_SCRIPTS/" "$LOCAL_BUILD"
-rsync -avz --delete --dry-run "$LOCAL_BUILD/" "$USER_NAME@$SERVER_NAME:$REMOTE_DIR"
+# rsync -avz --delete --dry-run "$LOCAL_BUILD/" "$USER_NAME@$SERVER_NAME:$REMOTE_DIR"
+rsync -avvz --delete "$LOCAL_BUILD/" "$USER_NAME@$SERVER_NAME:$REMOTE_DIR"
 
 # Check if rsync was successful
 if [ $? -eq 0 ]; then
