@@ -1,5 +1,6 @@
 services:
   achtungkurve:
+    container_name: achtungkurve
     build:
       context: ./frontend
     volumes:
@@ -8,11 +9,46 @@ services:
     ports:
       - "3000:3000"
     command: ["npm", "run", "dev"]
+    networks:
+      - backend_network
     environment:
       - NODE_ENV=development
 
-  echo:
+  mariadb:
+    container_name: mariadb
     build:
       context: ./backend
+      dockerfile: mariadb.Dockerfile
+    environment:
+      MYSQL_ROOT_PASSWORD: rootpassword  # Set a root password
+      MYSQL_DATABASE: example_db  # Name of the database to create
+      MYSQL_USER: user  # User for connecting to the database
+      MYSQL_PASSWORD: userpassword  # Password for the database user
+    volumes:
+      - ./backend/sql:/root/sql
+      - db_data:/var/lib/mysql  # Persist database data
+    networks:
+      - backend_network
     ports:
-      - "3001:80"
+      - "3306:3306"  # Expose MySQL port to host machine
+
+  php:
+    container_name: php
+    build:
+      context: ./backend
+      dockerfile: php.Dockerfile
+    volumes:
+      - ./backend/src:/var/www/html  # Mount local code to container
+    networks:
+      - backend_network
+    ports:
+      - "3001:3001"  # Expose PHP development server
+    command: php -S 0.0.0.0:3001 -t /var/www/html  # Start PHP dev server
+
+networks:
+  backend_network:
+    driver: bridge
+
+volumes:
+  db_data:
+    driver: local

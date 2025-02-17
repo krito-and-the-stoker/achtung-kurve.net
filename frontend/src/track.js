@@ -1,10 +1,9 @@
 import md5 from 'md5'
 
-const data = []
 let session = null
 let game = null
 
-export default (type, data) => {
+export default async (type, data) => {
     if (!session) {
         session = md5(Math.random())
     }
@@ -14,15 +13,31 @@ export default (type, data) => {
     }
 
     const event = {
-        data: JSON.stringify(data),
+        data: data ?? {},
         type,
         game,
         session,
         user: md5(fingerprint()),
     }
 
-    data.push(event)
-    console.log(event)
+    try {
+        const response = await fetch('/events/add.php', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(event),
+        })
+        if (response.ok) {
+            console.log(await response.text())
+            console.log('added', event)
+        } else {
+            console.error('failed to add', event, await response.error())
+        }
+    } catch(e) {
+        console.error('failed to send events', e)
+    }
+
 }
 
 const fingerprint = () => {
